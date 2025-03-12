@@ -1,0 +1,29 @@
+{
+    "page": 1,
+    "results": [
+        {
+            "adult": false,
+            "backdrop_path": "/hP5pMJfxbY9p72LgEY6j9qGidtE.jpg",
+            "genre_ids": [
+                10759,
+                9648,
+                80
+            ],
+            "id": 225385,
+            "origin_country": [
+                "GB"
+            ],
+            "original_language": "en",
+            "original_name": "Black Doves",
+            "overview": "When a spy posing as a politician's wife learns her lover has been murdered, an old assassin friend joins her on a quest for truth — and vengeance.",
+            "popularity": 80.553,
+            "poster_path": "/uoXtkm2P4HPPL8T3IBJ02G3hCC4.jpg",
+            "first_air_date": "2024-12-05",
+            "name": "Black Doves",
+            "vote_average": 7.1,
+            "vote_count": 219
+        }
+    ],
+    "total_pages": 1,
+    "total_results": 1
+}

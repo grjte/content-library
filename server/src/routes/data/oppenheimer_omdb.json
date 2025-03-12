@@ -1,0 +1,76 @@
+{
+    "Search": [
+        {
+            "Title": "Oppenheimer",
+            "Year": "2023",
+            "imdbID": "tt15398776",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BN2JkMDc5MGQtZjg3YS00NmFiLWIyZmQtZTJmNTM5MjVmYTQ4XkEyXkFqcGc@._V1_SX300.jpg"
+        },
+        {
+            "Title": "To End All War: Oppenheimer & the Atomic Bomb",
+            "Year": "2023",
+            "imdbID": "tt28240284",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BYjViMzZiNGQtNTRjMC00ZmRhLThmYjgtNmI3NDU1NzIzZDI4XkEyXkFqcGc@._V1_SX300.jpg"
+        },
+        {
+            "Title": "Oppenheimer",
+            "Year": "1980",
+            "imdbID": "tt0078037",
+            "Type": "series",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BMjgzNDY1OGUtMTliOC00MjhkLWE4NTMtZGJhY2NkYjQ5ZDRhXkEyXkFqcGc@._V1_SX300.jpg"
+        },
+        {
+            "Title": "Oppenheimer: The Real Story",
+            "Year": "2023",
+            "imdbID": "tt27192512",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BN2ZmYzBiNWUtNTZlOC00YTc1LTk4NDYtYTdjMjE3ZTk0Zjg3XkEyXkFqcGc@._V1_SX300.jpg"
+        },
+        {
+            "Title": "The Trials of J. Robert Oppenheimer",
+            "Year": "2009",
+            "imdbID": "tt1559008",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BMzI1YTAzNjQtNGVmZS00ZDQ5LWE0ZTktMDc1ODI2ZTFhZTY5XkEyXkFqcGc@._V1_SX300.jpg"
+        },
+        {
+            "Title": "The Real Oppenheimer",
+            "Year": "2023",
+            "imdbID": "tt28655290",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BMWQ3YzUxMDAtNDQ4ZC00NzAzLThhNTMtYzUyNWZlMGNiZDA2XkEyXkFqcGc@._V1_SX300.jpg"
+        },
+        {
+            "Title": "In der Sache J. Robert Oppenheimer",
+            "Year": "1964",
+            "imdbID": "tt0058228",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BMTdkYzgyNmMtNDhiNi00ZDc5LWEyZjMtYTljZGJkOTg1ZWFlXkEyXkFqcGdeQXVyMDcxNzEyNw@@._V1_SX300.jpg"
+        },
+        {
+            "Title": "Oppenheimer After Trinity",
+            "Year": "2023",
+            "imdbID": "tt28017314",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BNjI0OTY4ODgtYjMwYS00YTZjLWE0OWMtY2YyODY0ODAyNGI2XkEyXkFqcGc@._V1_SX300.jpg"
+        },
+        {
+            "Title": "Inside Christopher Nolan's Oppenheimer",
+            "Year": "2023",
+            "imdbID": "tt28522133",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BNjZlYTE4ODEtNTBlYy00YjJhLWJkYjQtOTE2Mzg3MzRkZTY5XkEyXkFqcGc@._V1_SX300.jpg"
+        },
+        {
+            "Title": "The Ballad of Oppenheimer Park",
+            "Year": "2016",
+            "imdbID": "tt5136682",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BZjhmNmMyODctOGFlMS00MjY2LTk4NDEtYWQyMGYwZjIzOTdkXkEyXkFqcGc@._V1_SX300.jpg"
+        }
+    ],
+    "totalResults": "30",
+    "Response": "True"
+}

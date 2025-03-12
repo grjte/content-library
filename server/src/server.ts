@@ -6,14 +6,21 @@ import { Repo } from "@automerge/automerge-repo"
 import { NodeWSServerAdapter } from "@automerge/automerge-repo-network-websocket"
 import { NodeFSStorageAdapter } from "@automerge/automerge-repo-storage-nodefs"
 import os from "os"
+import searchRouter from './routes/search.js'
+import getRouter from './routes/get.js'
 
 const cors = (req: Request, res: Response, next: Function) => {
-  const allowedOrigin = process.env.CLIENT_URL || '*'
+  const allowedOrigin = process.env.APP_CLIENT_URL || '*'
 
   res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
   next();
 };
@@ -60,6 +67,10 @@ export class Server {
     app.get("/", (req, res) => {
       res.send(`👍 content-archive-server is running`)
     })
+
+    // Mount the content API router under /api
+    app.use('/api', searchRouter);
+    app.use('/api', getRouter);
 
     // === Initialize the repo =================================================================
     const config = {

@@ -1,0 +1,76 @@
+{
+    "Search": [
+        {
+            "Title": "Point Break",
+            "Year": "1991",
+            "imdbID": "tt0102685",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BNTI3YzY3N2MtODI1OC00NmU0LThlMDYtNmFjMGFkNzhhNTRlXkEyXkFqcGc@._V1_SX300.jpg"
+        },
+        {
+            "Title": "Point Break",
+            "Year": "2015",
+            "imdbID": "tt2058673",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BMjIxNDkzOTAyNV5BMl5BanBnXkFtZTgwNjEyOTY3NjE@._V1_SX300.jpg"
+        },
+        {
+            "Title": "Break Point",
+            "Year": "2023–2024",
+            "imdbID": "tt17048442",
+            "Type": "series",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BMmQ5ODVhMWItNWY0OS00Mzc4LWIyZjMtYWRiZDMwOGFjOWVhXkEyXkFqcGc@._V1_SX300.jpg"
+        },
+        {
+            "Title": "Break Point",
+            "Year": "2014",
+            "imdbID": "tt3062742",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BMTQzOTYwMzA4NF5BMl5BanBnXkFtZTgwMDQyODIzNjE@._V1_SX300.jpg"
+        },
+        {
+            "Title": "Break Point",
+            "Year": "2021–",
+            "imdbID": "tt15368922",
+            "Type": "series",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BODkwODVjMTEtNmZhYi00NDFjLWJmN2UtMzYyYTMxNTlkMDFkXkEyXkFqcGc@._V1_SX300.jpg"
+        },
+        {
+            "Title": "RiffTrax Live: Point Break",
+            "Year": "2024",
+            "imdbID": "tt32552129",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BNGVlMWI4NGUtNGJmMi00ODllLWFiYmQtOTYxZWVjZDliOTk1XkEyXkFqcGc@._V1_SX300.jpg"
+        },
+        {
+            "Title": "Break Point: a Davis Cup Story",
+            "Year": "2020",
+            "imdbID": "tt13411926",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BOTc5NzRiZGYtNDRlZi00M2QxLTk3NDAtMGQ5ZWI4MjA5ZDRiXkEyXkFqcGdeQXVyMTI2MDQ5ODYz._V1_SX300.jpg"
+        },
+        {
+            "Title": "Break Point",
+            "Year": "2004",
+            "imdbID": "tt0402866",
+            "Type": "movie",
+            "Poster": "https://m.media-amazon.com/images/M/MV5BY2UzMWNiMWQtZjA3OC00NDQ1LTlhZjEtNTEwMzhhYTI5ZTkxXkEyXkFqcGc@._V1_SX300.jpg"
+        },
+        {
+            "Title": "Break Point",
+            "Year": "2011",
+            "imdbID": "tt2043799",
+            "Type": "movie",
+            "Poster": "N/A"
+        },
+        {
+            "Title": "Break Point",
+            "Year": "1982–",
+            "imdbID": "tt0398432",
+            "Type": "series",
+            "Poster": "N/A"
+        }
+    ],
+    "totalResults": "25",
+    "Response": "True"
+}
