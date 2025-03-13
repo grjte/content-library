@@ -9,7 +9,11 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "NodeNext",
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "typeRoots": [
+            "./node_modules/@types",
+            "./src/types"
+        ]
     },
     "include": [
         "src/**/*.ts"

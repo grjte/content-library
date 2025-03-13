@@ -1,6 +1,16 @@
 import 'dotenv/config';
 import crypto from 'crypto';
 import { Router } from 'express';
+import getHTML from 'html-get';
+import createBrowser from 'browserless';
+import metascraper from 'metascraper';
+import metascraperAuthor from 'metascraper-author';
+import metascraperDate from 'metascraper-date';
+import metascraperDescription from 'metascraper-description';
+import metascraperImage from 'metascraper-image';
+import metascraperPublisher from 'metascraper-publisher';
+import metascraperTitle from 'metascraper-title';
+import metascraperUrl from 'metascraper-url';
 
 const router = Router();
 
@@ -160,6 +170,86 @@ router.get("/get/tv", async (req, res) => {
     } catch (error) {
         console.error("Failed to fetch tv series data:", error)
         res.status(500).json({ error: 'Failed to fetch tv series data' })
+    }
+});
+
+interface UrlMetadata {
+    author?: string;
+    date?: string;
+    description?: string;
+    image?: string;
+    publisher?: string;
+    title?: string;
+    url?: string;
+}
+
+router.get("/get/url", async (req, res) => {
+    try {
+        const url = req.query.url as string;
+        if (!url) {
+            res.status(400).json({ error: 'URL parameter is required' });
+            return;
+        }
+
+        const browser = createBrowser();
+        const browserContext = browser.createContext();
+
+        const { html } = await getHTML(url, {
+            getBrowserless: () => browserContext
+        });
+
+        const scraper = metascraper([
+            metascraperAuthor(),
+            metascraperDate(),
+            metascraperDescription(),
+            metascraperImage(),
+            metascraperPublisher(),
+            metascraperTitle(),
+            metascraperUrl()
+        ]);
+
+        const metadata: UrlMetadata = await scraper({ html, url });
+
+        // Clean up browser resources
+        // TODO: the docs claim this is required, but it gives an error
+        // browserContext.destroyContext()
+        await browser.close()
+
+        // infer granular content subtype from url
+        let subType;
+        if (url.includes('x.com') || url.includes('twitter.com') || url.includes('bsky.app') || url.includes('mastodon.social')) {
+            subType = 'thread'
+        } else if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('tiktok.com') || url.includes('vimeo.com') || url.includes('twitch.tv')) {
+            subType = 'video'
+        } else if (url.includes('arxiv.org') || url.includes('eprint.iacr.org')) {
+            subType = 'paper'
+        } else if (url.includes('github.com') || url.includes('gitlab.com') || url.includes('bitbucket.org')) {
+            subType = 'code'
+        } else {
+            subType = 'url'
+        }
+
+        const entry = {
+            type: 'url',
+            author: metadata.author?.split(',').map((a: string) => a.trim()),
+            name: metadata.title,
+            description: metadata.description,
+            publicationDate: metadata.date,
+            publisher: metadata.publisher,
+            url: metadata.url || url,
+            subType: subType,
+            thumbnailUrl: metadata.image,
+        }
+
+        // Remove any undefined values
+        const result = Object.fromEntries(
+            Object.entries(entry).filter(([_, value]) => value !== undefined)
+        )
+
+        res.json({ result: result });
+    } catch (error) {
+        console.error("Failed to fetch URL metadata:", error);
+        res.status(500).json({ error: 'Failed to fetch URL metadata' });
     }
 });
 
