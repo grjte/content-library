@@ -1,0 +1,76 @@
+{
+    "lexicon": 1,
+    "id": "app.vercel.contentarchive.content.movie",
+    "defs": {
+        "main": {
+            "type": "object",
+            "description": "Movie type extending CreativeWork.",
+            "required": [
+                "createdAt",
+                "id",
+                "title",
+                "type"
+            ],
+            "properties": {
+                "author": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "createdAt": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "datePublished": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "description": {
+                    "type": "string",
+                    "maxLength": 256
+                },
+                "title": {
+                    "type": "string"
+                },
+                "thumbnailUrl": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "const": "movie"
+                },
+                "actors": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "director": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "genre": {
+                    "type": "string"
+                },
+                "imdbId": {
+                    "type": "string"
+                },
+                "writer": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

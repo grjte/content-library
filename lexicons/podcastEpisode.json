@@ -1,0 +1,65 @@
+{
+    "lexicon": 1,
+    "id": "app.vercel.contentarchive.content.podcastEpisode",
+    "defs": {
+        "main": {
+            "type": "object",
+            "description": "PodcastEpisode type extending CreativeWork with additional podcast fields.",
+            "required": [
+                "createdAt",
+                "id",
+                "title",
+                "type",
+                "podcastName"
+            ],
+            "properties": {
+                "author": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "createdAt": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "datePublished": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "description": {
+                    "type": "string",
+                    "maxLength": 256
+                },
+                "title": {
+                    "type": "string"
+                },
+                "thumbnailUrl": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "const": "podcastEpisode"
+                },
+                "duration": {
+                    "type": "string"
+                },
+                "episodeNumber": {
+                    "type": "integer"
+                },
+                "podcastName": {
+                    "type": "string"
+                },
+                "seasonNumber": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

@@ -33,7 +33,7 @@ router.get("/search/book", async (req, res) => {
         const results = data?.docs.map((doc: any) => {
             return {
                 "type": 'book',
-                "name": doc.title,
+                "title": doc.title,
                 "author": doc.author_name?.map((a: string) => a.trim()) || [],
                 "datePublished": doc.first_publish_year?.toString(),
                 "publisher": doc.publisher?.[0],
@@ -89,7 +89,7 @@ router.get("/search/podcast", async (req, res) => {
             return {
                 type: 'podcast',
                 id: doc.id,
-                name: doc.title,
+                title: doc.title,
                 author: [doc.author],
                 description: doc.description,
                 thumbnailUrl: doc.image || undefined,
@@ -131,7 +131,7 @@ router.get("/search/movie", async (req, res) => {
         const results = data?.Search.map((doc: any) => {
             return {
                 type: 'movie',
-                name: doc.Title,
+                title: doc.Title,
                 imdbId: doc.imdbID,
                 datePublished: doc.Year,
                 url: `https://www.imdb.com/title/${doc.imdbID}`,
@@ -173,7 +173,7 @@ router.get("/search/tv", async (req, res) => {
         const results = data?.Search.map((doc: any) => {
             return {
                 type: 'tv_show',
-                name: doc.Title,
+                title: doc.Title,
                 imdbId: doc.imdbID,
                 datePublished: doc.Year,
                 url: `https://www.imdb.com/title/${doc.imdbID}`,

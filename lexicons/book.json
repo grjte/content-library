@@ -1,0 +1,55 @@
+{
+    "lexicon": 1,
+    "id": "app.vercel.contentarchive.content.book",
+    "defs": {
+        "main": {
+            "type": "object",
+            "description": "Book type extending CreativeWork.",
+            "required": [
+                "createdAt",
+                "id",
+                "title",
+                "type"
+            ],
+            "properties": {
+                "author": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "createdAt": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "datePublished": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "description": {
+                    "type": "string",
+                    "maxLength": 256
+                },
+                "title": {
+                    "type": "string"
+                },
+                "thumbnailUrl": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "const": "book"
+                },
+                "publisher": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

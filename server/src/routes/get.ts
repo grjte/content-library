@@ -53,7 +53,7 @@ router.get("/get/podcast", async (req, res) => {
         const results = data?.items.map((doc: any) => {
             return {
                 type: 'podcast_episode',
-                name: doc.title,
+                title: doc.title,
                 author: doc.author ? [doc.author] : [],
                 description: doc.description,
                 duration: doc.duration ? `PT${Math.floor(doc.duration / 60)}M${doc.duration % 60}S` : undefined,
@@ -101,7 +101,7 @@ router.get("/get/movie", async (req, res) => {
         const data = await response.json()
         const entry = {
             type: data.Type === 'movie',
-            name: data.Title,
+            title: data.Title,
             description: data.Plot,
             genre: data.Genre,
             actors: data.Actors.split(',').map((a: string) => a.trim()),
@@ -150,7 +150,7 @@ router.get("/get/tv", async (req, res) => {
         const data = await response.json()
         const entry = {
             type: data.Type === 'tv_show',
-            name: data.Title,
+            title: data.Title,
             description: data.Plot,
             genre: data.Genre,
             actors: data.Actors.split(',').map((a: string) => a.trim()),
@@ -230,14 +230,13 @@ router.get("/get/url", async (req, res) => {
         }
 
         const entry = {
-            type: 'url',
+            type: subType,
             author: metadata.author?.split(',').map((a: string) => a.trim()),
-            name: metadata.title,
+            title: metadata.title,
             description: metadata.description,
             publicationDate: metadata.date,
             publisher: metadata.publisher,
             url: metadata.url || url,
-            subType: subType,
             thumbnailUrl: metadata.image,
         }
 

@@ -1,0 +1,42 @@
+{
+    "lexicon": 1,
+    "id": "app.vercel.contentarchive.content",
+    "description": "Schema for content records of various CreativeWork types (Article, Book, PodcastEpisode, Movie, TvShow, etc.)",
+    "defs": {
+        "main": {
+            "type": "record",
+            "key": "id",
+            "record": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "createdAt",
+                    "content"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "datetime"
+                    },
+                    "content": {
+                        "type": "union",
+                        "refs": [
+                            "app.vercel.contentarchive.content.article",
+                            "app.vercel.contentarchive.content.book",
+                            "app.vercel.contentarchive.content.movie",
+                            "app.vercel.contentarchive.content.paper",
+                            "app.vercel.contentarchive.content.podcastEpisode",
+                            "app.vercel.contentarchive.content.thread",
+                            "app.vercel.contentarchive.content.tvShow",
+                            "app.vercel.contentarchive.content.uri",
+                            "app.vercel.contentarchive.content.video"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

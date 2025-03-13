@@ -1,0 +1,53 @@
+{
+    "lexicon": 1,
+    "id": "app.vercel.contentarchive.content.thread",
+    "defs": {
+        "main": {
+            "type": "object",
+            "description": "Thread type extending CreativeWork with a required URL override.",
+            "required": [
+                "createdAt",
+                "id",
+                "title",
+                "uri",
+                "type"
+            ],
+            "properties": {
+                "author": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "createdAt": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "datePublished": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "description": {
+                    "type": "string",
+                    "maxLength": 256
+                },
+                "title": {
+                    "type": "string"
+                },
+                "thumbnailUrl": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "const": "thread"
+                }
+            }
+        }
+    }
+}
