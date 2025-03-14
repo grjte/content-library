@@ -77,8 +77,7 @@ export class Server {
       network: [new NodeWSServerAdapter(this.#socket as any)],
       storage: new NodeFSStorageAdapter(dir),
       peerId: `storage-server-${hostname}`,
-      // Share all documents between clients
-      sharePolicy: async () => true,
+      sharePolicy: async () => false,
     }
     /** @ts-ignore @type {(import("@automerge/automerge-repo").PeerId)}  */
     this.#repo = new Repo(config)
