@@ -1,21 +1,21 @@
 {
   "name": "content-archive-server",
+  "author": "grjte",
   "version": "0.1.0",
-  "main": "src/index.js",
+  "description": "Sync server for a local-first application leveraging ATProto for managing private and public content history",
   "license": "MIT",
-  "type": "module",
+  "main": "index.ts",
+  "private": true,
   "scripts": {
-    "build": "tsc",
+    "build": "tsup",
     "start": "node ./dist/index.js",
     "test": "mocha --exit",
-    "prettier": "prettier -c ."
+    "prettier": "prettier -c .",
+    "clean": "rimraf dist"
   },
-  "files": [
-    "src/index.js",
-    "src/server.js"
-  ],
-  "bin": "./src/index.js",
   "dependencies": {
+    "@atproto/lexicon": "^0.4.8",
+    "@atproto/xrpc-server": "^0.7.12",
     "@automerge/automerge": "^2.2.4",
     "@automerge/automerge-repo": "^1.2.0",
     "@automerge/automerge-repo-network-websocket": "^1.2.0",
@@ -41,13 +41,30 @@
     "@types/ws": "^8.5.14",
     "mocha": "^10.2.0",
     "prettier": "^3.0.0",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.1",
+    "tsup": "^8.4.0",
     "typescript": "^4.7.4"
+  },
+  "tsup": {
+    "entry": [
+      "src",
+      "!src/**/__tests__/**",
+      "!src/**/*.test.*"
+    ],
+    "outDir": "dist",
+    "format": [
+      "esm"
+    ],
+    "splitting": false,
+    "sourcemap": true,
+    "clean": true
   },
   "prettier": {
     "semi": false
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "type": "module"
 }

@@ -6,10 +6,7 @@
             "type": "object",
             "description": "PodcastEpisode type extending CreativeWork with additional podcast fields.",
             "required": [
-                "createdAt",
-                "id",
                 "title",
-                "type",
                 "podcastName"
             ],
             "properties": {
@@ -18,13 +15,6 @@
                     "items": {
                         "type": "string"
                     }
-                },
-                "createdAt": {
-                    "type": "string",
-                    "format": "datetime"
-                },
-                "id": {
-                    "type": "string"
                 },
                 "datePublished": {
                     "type": "string",
@@ -42,10 +32,6 @@
                 },
                 "uri": {
                     "type": "string"
-                },
-                "type": {
-                    "type": "string",
-                    "const": "podcastEpisode"
                 },
                 "duration": {
                     "type": "string"

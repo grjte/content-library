@@ -11,6 +11,13 @@ import metascraperImage from 'metascraper-image';
 import metascraperPublisher from 'metascraper-publisher';
 import metascraperTitle from 'metascraper-title';
 import metascraperUrl from 'metascraper-url';
+import { Main as MovieData } from '#/lexicon/types/app/vercel/contentarchive/content/movie';
+import { Main as PaperData } from '#/lexicon/types/app/vercel/contentarchive/content/paper';
+import { Main as PodcastEpisodeData } from '#/lexicon/types/app/vercel/contentarchive/content/podcastEpisode';
+import { Main as ThreadData } from '#/lexicon/types/app/vercel/contentarchive/content/thread';
+import { Main as TvShowData } from '#/lexicon/types/app/vercel/contentarchive/content/tvShow';
+import { Main as UriData } from '#/lexicon/types/app/vercel/contentarchive/content/uri';
+import { Main as VideoData } from '#/lexicon/types/app/vercel/contentarchive/content/video';
 
 const router = Router();
 
@@ -52,7 +59,7 @@ router.get("/get/podcast", async (req, res) => {
         const data = await response.json();
         const results = data?.items.map((doc: any) => {
             return {
-                type: 'podcast_episode',
+                type: 'podcastEpisode',
                 title: doc.title,
                 author: doc.author ? [doc.author] : [],
                 description: doc.description,
@@ -63,10 +70,8 @@ router.get("/get/podcast", async (req, res) => {
                 datePublished: new Date(doc.datePublished * 1000).toISOString(),
                 url: ensureSecureUrl(doc.link),
                 thumbnailUrl: ensureSecureUrl(doc.image),
-            }
+            } as PodcastEpisodeData
         })
-
-        console.log(results)
 
         res.json({ results: results || [] });
     } catch (error) {
@@ -100,7 +105,7 @@ router.get("/get/movie", async (req, res) => {
         const response = await fetch(url, options)
         const data = await response.json()
         const entry = {
-            type: data.Type === 'movie',
+            type: 'movie',
             title: data.Title,
             description: data.Plot,
             genre: data.Genre,
@@ -111,7 +116,8 @@ router.get("/get/movie", async (req, res) => {
             imdbId: data.imdbID,
             url: `https://www.imdb.com/title/${data.imdbID}`,
             thumbnailUrl: data.Poster !== 'N/A' ? ensureSecureUrl(data.Poster) : undefined,
-        }
+        } as MovieData
+
         // Remove any undefined values
         const result = Object.fromEntries(
             Object.entries(entry).filter(([_, value]) => value !== undefined)
@@ -149,7 +155,7 @@ router.get("/get/tv", async (req, res) => {
         const response = await fetch(url, options)
         const data = await response.json()
         const entry = {
-            type: data.Type === 'tv_show',
+            type: 'tvShow',
             title: data.Title,
             description: data.Plot,
             genre: data.Genre,
@@ -160,7 +166,8 @@ router.get("/get/tv", async (req, res) => {
             imdbId: data.imdbID,
             url: `https://www.imdb.com/title/${data.imdbID}`,
             thumbnailUrl: data.Poster !== 'N/A' ? ensureSecureUrl(data.Poster) : undefined,
-        }
+        } as TvShowData
+
         // Remove any undefined values
         const result = Object.fromEntries(
             Object.entries(entry).filter(([_, value]) => value !== undefined)
@@ -215,29 +222,41 @@ router.get("/get/url", async (req, res) => {
         // browserContext.destroyContext()
         await browser.close()
 
-        // infer granular content subtype from url
-        let subType;
-        if (url.includes('x.com') || url.includes('twitter.com') || url.includes('bsky.app') || url.includes('mastodon.social')) {
-            subType = 'thread'
-        } else if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('tiktok.com') || url.includes('vimeo.com') || url.includes('twitch.tv')) {
-            subType = 'video'
-        } else if (url.includes('arxiv.org') || url.includes('eprint.iacr.org')) {
-            subType = 'paper'
-        } else if (url.includes('github.com') || url.includes('gitlab.com') || url.includes('bitbucket.org')) {
-            subType = 'code'
-        } else {
-            subType = 'url'
-        }
-
-        const entry = {
-            type: subType,
+        let entry = {
+            $type: 'app.vercel.contentarchive.content.uri',
             author: metadata.author?.split(',').map((a: string) => a.trim()),
             title: metadata.title,
             description: metadata.description,
             publicationDate: metadata.date,
             publisher: metadata.publisher,
-            url: ensureSecureUrl(metadata.url || url),
+            uri: ensureSecureUrl(metadata.url || url),
             thumbnailUrl: metadata.image ? ensureSecureUrl(metadata.image) : undefined,
+        } as UriData | ThreadData | VideoData | PaperData
+
+        // TODO: add content type handling
+        // infer granular content subtype from url
+        if (url.includes('x.com') || url.includes('twitter.com') || url.includes('bsky.app') || url.includes('mastodon.social')) {
+            entry = {
+                ...entry,
+                $type: 'app.vercel.contentarchive.content.thread'
+            } as ThreadData
+        } else if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('tiktok.com') || url.includes('vimeo.com') || url.includes('twitch.tv')) {
+            entry = {
+                ...entry,
+                $type: 'app.vercel.contentarchive.content.video'
+            } as VideoData
+        } else if (url.includes('arxiv.org') || url.includes('eprint.iacr.org')) {
+            entry = {
+                ...entry,
+                $type: 'app.vercel.contentarchive.content.paper'
+            } as PaperData
+            // TODO: add article type handling
+            // TODO: add code type
+            // } else if (url.includes('github.com') || url.includes('gitlab.com') || url.includes('bitbucket.org')) {
+            //     entry.type = 'code'
+            //     entry = entry as CodeData
+        } else {
+            entry = entry as UriData
         }
 
         // Remove any undefined values

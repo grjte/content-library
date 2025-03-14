@@ -6,10 +6,7 @@
             "type": "object",
             "description": "Movie type extending CreativeWork.",
             "required": [
-                "createdAt",
-                "id",
-                "title",
-                "type"
+                "title"
             ],
             "properties": {
                 "author": {
@@ -17,13 +14,6 @@
                     "items": {
                         "type": "string"
                     }
-                },
-                "createdAt": {
-                    "type": "string",
-                    "format": "datetime"
-                },
-                "id": {
-                    "type": "string"
                 },
                 "datePublished": {
                     "type": "string",
@@ -41,10 +31,6 @@
                 },
                 "uri": {
                     "type": "string"
-                },
-                "type": {
-                    "type": "string",
-                    "const": "movie"
                 },
                 "actors": {
                     "type": "array",

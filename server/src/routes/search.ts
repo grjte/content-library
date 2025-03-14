@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import crypto from 'crypto';
 import { Router } from 'express';
+import { Main as BookData, validateMain as validateBookData } from '#/lexicon/types/app/vercel/contentarchive/content/book';
 
 // TODO: handle lexicon conversions
 const router = Router();
@@ -31,7 +32,7 @@ router.get("/search/book", async (req, res) => {
         const data = await response.json()
 
         const results = data?.docs.map((doc: any) => {
-            return {
+            const book = {
                 "type": 'book',
                 "title": doc.title,
                 "author": doc.author_name?.map((a: string) => a.trim()) || [],
@@ -39,7 +40,10 @@ router.get("/search/book", async (req, res) => {
                 "publisher": doc.publisher?.[0],
                 "url": `${process.env.OPEN_LIBRARY_API_URL}${doc.key}`,
                 "thumbnailUrl": doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg` : undefined
-            }
+            } as BookData
+            if (!validateBookData(book))
+                throw Error("Retrieved book data is invalid")
+            return book
         })
 
         res.json({ results: results || [] })
