@@ -61,8 +61,8 @@ router.get("/get/podcast", async (req, res) => {
                 seasonNumber: doc.season,
                 podcastName: doc.podcastName || '',
                 datePublished: new Date(doc.datePublished * 1000).toISOString(),
-                url: doc.link,
-                thumbnailUrl: doc.image,
+                url: ensureSecureUrl(doc.link),
+                thumbnailUrl: ensureSecureUrl(doc.image),
             }
         })
 
@@ -110,7 +110,7 @@ router.get("/get/movie", async (req, res) => {
             datePublished: data.Year,
             imdbId: data.imdbID,
             url: `https://www.imdb.com/title/${data.imdbID}`,
-            thumbnailUrl: data.Poster !== 'N/A' ? data.Poster : undefined,
+            thumbnailUrl: data.Poster !== 'N/A' ? ensureSecureUrl(data.Poster) : undefined,
         }
         // Remove any undefined values
         const result = Object.fromEntries(
@@ -159,7 +159,7 @@ router.get("/get/tv", async (req, res) => {
             datePublished: data.Year,
             imdbId: data.imdbID,
             url: `https://www.imdb.com/title/${data.imdbID}`,
-            thumbnailUrl: data.Poster !== 'N/A' ? data.Poster : undefined,
+            thumbnailUrl: data.Poster !== 'N/A' ? ensureSecureUrl(data.Poster) : undefined,
         }
         // Remove any undefined values
         const result = Object.fromEntries(
@@ -236,8 +236,8 @@ router.get("/get/url", async (req, res) => {
             description: metadata.description,
             publicationDate: metadata.date,
             publisher: metadata.publisher,
-            url: metadata.url || url,
-            thumbnailUrl: metadata.image,
+            url: ensureSecureUrl(metadata.url || url),
+            thumbnailUrl: metadata.image ? ensureSecureUrl(metadata.image) : undefined,
         }
 
         // Remove any undefined values
@@ -251,5 +251,10 @@ router.get("/get/url", async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch URL metadata' });
     }
 });
+
+const ensureSecureUrl = (url: string) => {
+    url.replace('http://', 'https://')
+    return url
+}
 
 export default router; 
