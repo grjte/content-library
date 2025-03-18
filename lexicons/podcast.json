@@ -1,0 +1,38 @@
+{
+    "lexicon": 1,
+    "id": "app.vercel.contentarchive.content.podcast",
+    "defs": {
+        "main": {
+            "type": "object",
+            "description": "Podcast type extending CreativeWork with additional podcast fields.",
+            "required": [
+                "title",
+                "podcastIndexId"
+            ],
+            "properties": {
+                "author": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "description": {
+                    "type": "string",
+                    "maxLength": 256
+                },
+                "podcastIndexId": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "thumbnailUrl": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

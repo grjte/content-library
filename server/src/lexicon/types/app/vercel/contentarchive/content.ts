@@ -13,6 +13,7 @@ import type * as AppVercelContentarchiveContentArticle from './content/article.j
 import type * as AppVercelContentarchiveContentBook from './content/book.js'
 import type * as AppVercelContentarchiveContentMovie from './content/movie.js'
 import type * as AppVercelContentarchiveContentPaper from './content/paper.js'
+import type * as AppVercelContentarchiveContentPodcast from './content/podcast.js'
 import type * as AppVercelContentarchiveContentPodcastEpisode from './content/podcastEpisode.js'
 import type * as AppVercelContentarchiveContentThread from './content/thread.js'
 import type * as AppVercelContentarchiveContentTvShow from './content/tvShow.js'
@@ -32,6 +33,7 @@ export interface Record {
     | $Typed<AppVercelContentarchiveContentBook.Main>
     | $Typed<AppVercelContentarchiveContentMovie.Main>
     | $Typed<AppVercelContentarchiveContentPaper.Main>
+    | $Typed<AppVercelContentarchiveContentPodcast.Main>
     | $Typed<AppVercelContentarchiveContentPodcastEpisode.Main>
     | $Typed<AppVercelContentarchiveContentThread.Main>
     | $Typed<AppVercelContentarchiveContentTvShow.Main>

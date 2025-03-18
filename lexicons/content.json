@@ -28,6 +28,7 @@
                             "app.vercel.contentarchive.content.book",
                             "app.vercel.contentarchive.content.movie",
                             "app.vercel.contentarchive.content.paper",
+                            "app.vercel.contentarchive.content.podcast",
                             "app.vercel.contentarchive.content.podcastEpisode",
                             "app.vercel.contentarchive.content.thread",
                             "app.vercel.contentarchive.content.tvShow",

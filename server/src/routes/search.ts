@@ -1,9 +1,9 @@
 import 'dotenv/config';
 import crypto from 'crypto';
 import { Router } from 'express';
-import { Main as BookData, validateMain as validateBookData } from '#/lexicon/types/app/vercel/contentarchive/content/book';
+import { Book, Movie, Podcast, TvShow } from '#/types/content';
 
-// TODO: handle lexicon conversions
+// TODO: handle lexicon types
 const router = Router();
 
 router.get("/search/book", async (req, res) => {
@@ -33,15 +33,15 @@ router.get("/search/book", async (req, res) => {
 
         const results = data?.docs.map((doc: any) => {
             const book = {
-                "type": 'book',
-                "title": doc.title,
-                "author": doc.author_name?.map((a: string) => a.trim()) || [],
-                "datePublished": doc.first_publish_year?.toString(),
-                "publisher": doc.publisher?.[0],
-                "url": `${process.env.OPEN_LIBRARY_API_URL}${doc.key}`,
-                "thumbnailUrl": doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg` : undefined
-            } as BookData
-            if (!validateBookData(book))
+                $type: Book.$type,
+                title: doc.title,
+                author: doc.author_name?.map((a: string) => a.trim()) || [],
+                datePublished: doc.first_publish_year?.toString(),
+                publisher: doc.publisher?.[0],
+                uri: `${process.env.OPEN_LIBRARY_API_URL}${doc.key}`,
+                thumbnailUrl: doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg` : undefined
+            } as Book.Type
+            if (!Book.validate(book))
                 throw Error("Retrieved book data is invalid")
             return book
         })
@@ -90,14 +90,17 @@ router.get("/search/podcast", async (req, res) => {
         const data = await response.json();
 
         const results = data?.feeds.map((doc: any) => {
-            return {
-                type: 'podcast',
+            const podcast = {
+                $type: Podcast.$type,
                 id: doc.id,
                 title: doc.title,
                 author: [doc.author],
                 description: doc.description,
                 thumbnailUrl: doc.image || undefined,
-            }
+            } as Podcast.Type
+            if (!Podcast.validate(podcast))
+                throw Error("Retrieved podcast data is invalid")
+            return podcast
         })
 
         res.json({ results: results || [] });
@@ -133,14 +136,17 @@ router.get("/search/movie", async (req, res) => {
         const data = await response.json()
 
         const results = data?.Search.map((doc: any) => {
-            return {
-                type: 'movie',
+            const movie = {
+                $type: Movie.$type,
                 title: doc.Title,
                 imdbId: doc.imdbID,
                 datePublished: doc.Year,
-                url: `https://www.imdb.com/title/${doc.imdbID}`,
+                uri: `https://www.imdb.com/title/${doc.imdbID}`,
                 thumbnailUrl: doc.Poster !== 'N/A' ? doc.Poster : undefined,
-            }
+            } as Movie.Type
+            if (!Movie.validate(movie))
+                throw Error("Retrieved movie data is invalid")
+            return movie
         })
 
         res.json({ results: results || [] })
@@ -175,14 +181,17 @@ router.get("/search/tv", async (req, res) => {
         const response = await fetch(url, options)
         const data = await response.json()
         const results = data?.Search.map((doc: any) => {
-            return {
-                type: 'tv_show',
+            const tvShow = {
+                type: TvShow.$type,
                 title: doc.Title,
                 imdbId: doc.imdbID,
                 datePublished: doc.Year,
-                url: `https://www.imdb.com/title/${doc.imdbID}`,
+                uri: `https://www.imdb.com/title/${doc.imdbID}`,
                 thumbnailUrl: doc.Poster !== 'N/A' ? doc.Poster : undefined,
-            }
+            } as TvShow.Type
+            if (!TvShow.validate(tvShow))
+                throw Error("Retrieved tv series data is invalid")
+            return tvShow
         })
 
         res.json({ results: results || [] })

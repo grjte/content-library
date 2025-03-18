@@ -113,6 +113,7 @@ export const schemaDict = {
                 'lex:app.vercel.contentarchive.content.book',
                 'lex:app.vercel.contentarchive.content.movie',
                 'lex:app.vercel.contentarchive.content.paper',
+                'lex:app.vercel.contentarchive.content.podcast',
                 'lex:app.vercel.contentarchive.content.podcastEpisode',
                 'lex:app.vercel.contentarchive.content.thread',
                 'lex:app.vercel.contentarchive.content.tvShow',
@@ -208,6 +209,42 @@ export const schemaDict = {
           description: {
             type: 'string',
             maxLength: 256,
+          },
+          title: {
+            type: 'string',
+          },
+          thumbnailUrl: {
+            type: 'string',
+          },
+          uri: {
+            type: 'string',
+          },
+        },
+      },
+    },
+  },
+  AppVercelContentarchiveContentPodcast: {
+    lexicon: 1,
+    id: 'app.vercel.contentarchive.content.podcast',
+    defs: {
+      main: {
+        type: 'object',
+        description:
+          'Podcast type extending CreativeWork with additional podcast fields.',
+        required: ['title', 'podcastIndexId'],
+        properties: {
+          author: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+          description: {
+            type: 'string',
+            maxLength: 256,
+          },
+          podcastIndexId: {
+            type: 'string',
           },
           title: {
             type: 'string',
@@ -483,6 +520,8 @@ export const ids = {
     'app.vercel.contentarchive.content.movie',
   AppVercelContentarchiveContentPaper:
     'app.vercel.contentarchive.content.paper',
+  AppVercelContentarchiveContentPodcast:
+    'app.vercel.contentarchive.content.podcast',
   AppVercelContentarchiveContentPodcastEpisode:
     'app.vercel.contentarchive.content.podcastEpisode',
   AppVercelContentarchiveContentThread:

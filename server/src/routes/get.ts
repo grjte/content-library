@@ -11,13 +11,7 @@ import metascraperImage from 'metascraper-image';
 import metascraperPublisher from 'metascraper-publisher';
 import metascraperTitle from 'metascraper-title';
 import metascraperUrl from 'metascraper-url';
-import { Main as MovieData } from '#/lexicon/types/app/vercel/contentarchive/content/movie';
-import { Main as PaperData } from '#/lexicon/types/app/vercel/contentarchive/content/paper';
-import { Main as PodcastEpisodeData } from '#/lexicon/types/app/vercel/contentarchive/content/podcastEpisode';
-import { Main as ThreadData } from '#/lexicon/types/app/vercel/contentarchive/content/thread';
-import { Main as TvShowData } from '#/lexicon/types/app/vercel/contentarchive/content/tvShow';
-import { Main as UriData } from '#/lexicon/types/app/vercel/contentarchive/content/uri';
-import { Main as VideoData } from '#/lexicon/types/app/vercel/contentarchive/content/video';
+import { Movie, TvShow, PodcastEpisode, Uri } from '#/types/content'
 
 const router = Router();
 
@@ -58,8 +52,8 @@ router.get("/get/podcast", async (req, res) => {
         const response = await fetch(url, options);
         const data = await response.json();
         const results = data?.items.map((doc: any) => {
-            return {
-                type: 'podcastEpisode',
+            const podcastEpisode = {
+                $type: PodcastEpisode.$type,
                 title: doc.title,
                 author: doc.author ? [doc.author] : [],
                 description: doc.description,
@@ -68,12 +62,20 @@ router.get("/get/podcast", async (req, res) => {
                 seasonNumber: doc.season,
                 podcastName: doc.podcastName || '',
                 datePublished: new Date(doc.datePublished * 1000).toISOString(),
-                url: ensureSecureUrl(doc.link),
+                uri: ensureSecureUrl(doc.link),
                 thumbnailUrl: ensureSecureUrl(doc.image),
-            } as PodcastEpisodeData
+            } as PodcastEpisode.Type
+
+            // Remove any undefined values
+            const result = Object.fromEntries(
+                Object.entries(podcastEpisode).filter(([_, value]) => value !== undefined)
+            )
+            if (!PodcastEpisode.validate(result))
+                throw Error("Retrieved podcast episode data is invalid")
+            return result
         })
 
-        res.json({ results: results || [] });
+        res.json({ result: results || [] });
     } catch (error) {
         console.error("Failed to fetch podcast data:", error);
         res.status(500).json({ error: 'Failed to fetch podcast data' });
@@ -105,7 +107,7 @@ router.get("/get/movie", async (req, res) => {
         const response = await fetch(url, options)
         const data = await response.json()
         const entry = {
-            type: 'movie',
+            $type: Movie.$type,
             title: data.Title,
             description: data.Plot,
             genre: data.Genre,
@@ -114,14 +116,16 @@ router.get("/get/movie", async (req, res) => {
             writer: data.Writer.split(',').map((a: string) => a.trim()),
             datePublished: data.Year,
             imdbId: data.imdbID,
-            url: `https://www.imdb.com/title/${data.imdbID}`,
+            uri: `https://www.imdb.com/title/${data.imdbID}`,
             thumbnailUrl: data.Poster !== 'N/A' ? ensureSecureUrl(data.Poster) : undefined,
-        } as MovieData
+        } as Movie.Type
 
         // Remove any undefined values
         const result = Object.fromEntries(
             Object.entries(entry).filter(([_, value]) => value !== undefined)
         )
+        if (!Movie.validate(result))
+            throw Error("Retrieved movie data is invalid")
 
         res.json({ result: result || {} })
     } catch (error) {
@@ -155,7 +159,7 @@ router.get("/get/tv", async (req, res) => {
         const response = await fetch(url, options)
         const data = await response.json()
         const entry = {
-            type: 'tvShow',
+            $type: TvShow.$type,
             title: data.Title,
             description: data.Plot,
             genre: data.Genre,
@@ -164,14 +168,16 @@ router.get("/get/tv", async (req, res) => {
             writer: data.Writer.split(',').map((a: string) => a.trim()),
             datePublished: data.Year,
             imdbId: data.imdbID,
-            url: `https://www.imdb.com/title/${data.imdbID}`,
+            uri: `https://www.imdb.com/title/${data.imdbID}`,
             thumbnailUrl: data.Poster !== 'N/A' ? ensureSecureUrl(data.Poster) : undefined,
-        } as TvShowData
+        } as TvShow.Type
 
         // Remove any undefined values
         const result = Object.fromEntries(
             Object.entries(entry).filter(([_, value]) => value !== undefined)
         )
+        if (!TvShow.validate(result))
+            throw Error("Retrieved tv series data is invalid")
 
         res.json({ result: result || {} })
     } catch (error) {
@@ -231,38 +237,40 @@ router.get("/get/url", async (req, res) => {
             publisher: metadata.publisher,
             uri: ensureSecureUrl(metadata.url || url),
             thumbnailUrl: metadata.image ? ensureSecureUrl(metadata.image) : undefined,
-        } as UriData | ThreadData | VideoData | PaperData
+        } as Uri.Type
 
         // TODO: add content type handling
         // infer granular content subtype from url
-        if (url.includes('x.com') || url.includes('twitter.com') || url.includes('bsky.app') || url.includes('mastodon.social')) {
-            entry = {
-                ...entry,
-                $type: 'app.vercel.contentarchive.content.thread'
-            } as ThreadData
-        } else if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('tiktok.com') || url.includes('vimeo.com') || url.includes('twitch.tv')) {
-            entry = {
-                ...entry,
-                $type: 'app.vercel.contentarchive.content.video'
-            } as VideoData
-        } else if (url.includes('arxiv.org') || url.includes('eprint.iacr.org')) {
-            entry = {
-                ...entry,
-                $type: 'app.vercel.contentarchive.content.paper'
-            } as PaperData
-            // TODO: add article type handling
-            // TODO: add code type
-            // } else if (url.includes('github.com') || url.includes('gitlab.com') || url.includes('bitbucket.org')) {
-            //     entry.type = 'code'
-            //     entry = entry as CodeData
-        } else {
-            entry = entry as UriData
-        }
+        // if (url.includes('x.com') || url.includes('twitter.com') || url.includes('bsky.app') || url.includes('mastodon.social')) {
+        //     entry = {
+        //         ...entry,
+        //         $type: 'app.vercel.contentarchive.content.thread'
+        //     } as ThreadData
+        // } else if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('tiktok.com') || url.includes('vimeo.com') || url.includes('twitch.tv')) {
+        //     entry = {
+        //         ...entry,
+        //         $type: 'app.vercel.contentarchive.content.video'
+        //     } as VideoData
+        // } else if (url.includes('arxiv.org') || url.includes('eprint.iacr.org')) {
+        //     entry = {
+        //         ...entry,
+        //         $type: 'app.vercel.contentarchive.content.paper'
+        //     } as PaperData
+        //     // TODO: add article type handling
+        //     // TODO: add code type
+        //     // } else if (url.includes('github.com') || url.includes('gitlab.com') || url.includes('bitbucket.org')) {
+        //     //     entry.type = 'code'
+        //     //     entry = entry as CodeData
+        // } else {
+        //     entry = entry as UriData
+        // }
 
         // Remove any undefined values
         const result = Object.fromEntries(
             Object.entries(entry).filter(([_, value]) => value !== undefined)
         )
+        if (!Uri.validate(result))
+            throw Error("Retrieved URI data is invalid")
 
         res.json({ result: result });
     } catch (error) {
