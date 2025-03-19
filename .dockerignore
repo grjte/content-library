@@ -1,0 +1,35 @@
+# Node modules in all directories
+**/node_modules/
+
+# Logs
+npm-debug.log*
+*.log
+
+# Environment files (optional, depending on your setup)
+.env.local
+.env.*.local
+
+# Local testing files
+server/.data
+server/public/
+
+# Build outputs
+**/dist/
+
+# Version control
+.git
+.gitignore
+
+# IDE specific files
+.idea
+.vscode
+*.swp
+*.swo
+
+# Lexicon definitions
+lexicons/
+
+# Ignore Dockerfile and docker-compose files
+Dockerfile*
+.dockerignore
+docker-compose.yml
