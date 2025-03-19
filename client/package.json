@@ -1,0 +1,48 @@
+{
+  "name": "lofisky-content-library-client",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Client for a local-first application leveraging ATProto for managing private and public content history",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@atproto/api": "^0.13.35",
+    "@atproto/common": "^0.4.8",
+    "@atproto/lexicon": "^0.4.8",
+    "@atproto/oauth-client-browser": "^0.3.10",
+    "@atproto/xrpc-server": "^0.7.12",
+    "@automerge/automerge-repo": "^1.2.1",
+    "@automerge/automerge-repo-network-broadcastchannel": "^1.2.1",
+    "@automerge/automerge-repo-network-websocket": "^1.2.1",
+    "@automerge/automerge-repo-react-hooks": "^1.2.1",
+    "@automerge/automerge-repo-storage-indexeddb": "^1.2.1",
+    "@tailwindcss/vite": "^4.0.6",
+    "dayjs": "^1.11.13",
+    "multiformats": "^13.3.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.5",
+    "react-use": "^17.6.0",
+    "tailwindcss": "^4.0.6",
+    "vite-plugin-top-level-await": "^1.4.4",
+    "vite-plugin-wasm": "^3.4.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.19.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.18",
+    "globals": "^15.14.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.22.0",
+    "vite": "^6.1.0"
+  }
+}

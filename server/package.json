@@ -1,5 +1,5 @@
 {
-  "name": "content-archive-server",
+  "name": "lofisky-content-library-server",
   "author": "grjte",
   "version": "0.1.0",
   "description": "Sync server for a local-first application leveraging ATProto for managing private and public content history",

@@ -1,6 +1,6 @@
 {
     "lexicon": 1,
-    "id": "app.vercel.contentarchive.content.thread",
+    "id": "app.lofisky.library.content.thread",
     "defs": {
         "main": {
             "type": "object",

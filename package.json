@@ -1,21 +1,22 @@
 {
-    "name": "content-archive",
+    "name": "lofisky-content-library",
     "author": "grjte",
     "version": "0.1.0",
     "license": "MIT",
     "description": "Local-first application leveraging ATProto for managing private and public content history",
     "main": "index.js",
     "scripts": {
+        "build:client": "cd client && npm run build && cp -r dist/* ../server/public",
         "build:server": "cd server && npm run build",
-        "install:all": "npm install && cd ../server && npm install",
-        "lexgen": "lex gen-server ./server/src/lexicon ./lexicons/*",
+        "build:all": "npm run build:client && npm run build:server",
+        "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+        "lexgen": "lex gen-server ./server/src/lexicon ./lexicons/* && cp -r ./server/src/lexicon ./client/src/lexicon",
+        "start:server": "cd server && npm run start",
+        "start:client": "cd client && npm run dev",
         "start": "cd server && npm run start"
     },
     "keywords": [],
     "devDependencies": {
-        "concurrently": "^8.2.2"
-    },
-    "dependencies": {
         "@atproto/lex-cli": "^0.7.0"
     }
 }

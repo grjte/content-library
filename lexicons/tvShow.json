@@ -1,6 +1,6 @@
 {
     "lexicon": 1,
-    "id": "app.vercel.contentarchive.content.tvShow",
+    "id": "app.lofisky.library.content.tvShow",
     "defs": {
         "main": {
             "type": "object",

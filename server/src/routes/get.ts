@@ -229,7 +229,7 @@ router.get("/get/url", async (req, res) => {
         await browser.close()
 
         let entry = {
-            $type: 'app.vercel.contentarchive.content.uri',
+            $type: 'app.lofisky.library.content.uri',
             author: metadata.author?.split(',').map((a: string) => a.trim()),
             title: metadata.title,
             description: metadata.description,
@@ -244,17 +244,17 @@ router.get("/get/url", async (req, res) => {
         // if (url.includes('x.com') || url.includes('twitter.com') || url.includes('bsky.app') || url.includes('mastodon.social')) {
         //     entry = {
         //         ...entry,
-        //         $type: 'app.vercel.contentarchive.content.thread'
+        //         $type: 'app.lofisky.library.content.thread'
         //     } as ThreadData
         // } else if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('tiktok.com') || url.includes('vimeo.com') || url.includes('twitch.tv')) {
         //     entry = {
         //         ...entry,
-        //         $type: 'app.vercel.contentarchive.content.video'
+        //         $type: 'app.lofisky.library.content.video'
         //     } as VideoData
         // } else if (url.includes('arxiv.org') || url.includes('eprint.iacr.org')) {
         //     entry = {
         //         ...entry,
-        //         $type: 'app.vercel.contentarchive.content.paper'
+        //         $type: 'app.lofisky.library.content.paper'
         //     } as PaperData
         //     // TODO: add article type handling
         //     // TODO: add code type

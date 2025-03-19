@@ -1,6 +1,6 @@
 {
     "lexicon": 1,
-    "id": "app.vercel.contentarchive.content",
+    "id": "app.lofisky.library.content",
     "description": "Schema for content records of various CreativeWork types (Article, Book, PodcastEpisode, Movie, TvShow, etc.)",
     "defs": {
         "main": {
@@ -24,16 +24,16 @@
                     "content": {
                         "type": "union",
                         "refs": [
-                            "app.vercel.contentarchive.content.article",
-                            "app.vercel.contentarchive.content.book",
-                            "app.vercel.contentarchive.content.movie",
-                            "app.vercel.contentarchive.content.paper",
-                            "app.vercel.contentarchive.content.podcast",
-                            "app.vercel.contentarchive.content.podcastEpisode",
-                            "app.vercel.contentarchive.content.thread",
-                            "app.vercel.contentarchive.content.tvShow",
-                            "app.vercel.contentarchive.content.uri",
-                            "app.vercel.contentarchive.content.video"
+                            "app.lofisky.library.content.article",
+                            "app.lofisky.library.content.book",
+                            "app.lofisky.library.content.movie",
+                            "app.lofisky.library.content.paper",
+                            "app.lofisky.library.content.podcast",
+                            "app.lofisky.library.content.podcastEpisode",
+                            "app.lofisky.library.content.thread",
+                            "app.lofisky.library.content.tvShow",
+                            "app.lofisky.library.content.uri",
+                            "app.lofisky.library.content.video"
                         ]
                     }
                 }

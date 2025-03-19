@@ -64,13 +64,14 @@ export class Server {
     app.use(express.json());
 
     // === Add the routes ======================================================================
-    app.get("/", (req, res) => {
-      res.send(`👍 content-archive-server is running`)
-    })
-
     // Mount the content API router under /api
     app.use('/api', searchRouter);
     app.use('/api', getRouter);
+
+    // Serve the client app for any non-API route
+    app.get('*', (req, res) => {
+      res.sendFile('index.html', { root: 'public' });
+    });
 
     // === Initialize the repo =================================================================
     const config = {

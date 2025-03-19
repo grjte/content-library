@@ -1,6 +1,6 @@
 {
     "lexicon": 1,
-    "id": "app.vercel.contentarchive.content.movie",
+    "id": "app.lofisky.library.content.movie",
     "defs": {
         "main": {
             "type": "object",
