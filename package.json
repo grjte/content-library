@@ -13,10 +13,15 @@
         "lexgen": "lex gen-server ./server/src/lexicon ./lexicons/* && cp -r ./server/src/lexicon ./client/src/lexicon",
         "start:server": "cd server && npm run start",
         "start:client": "cd client && npm run dev",
-        "start": "cd server && npm run start"
+        "start": "cd server && npm run start",
+        "publish-lexicons": "node publishLexicons.js ./lexicons"
     },
     "keywords": [],
     "devDependencies": {
         "@atproto/lex-cli": "^0.7.0"
+    },
+    "dependencies": {
+        "@atproto/api": "^0.14.10",
+        "dotenv": "^16.4.7"
     }
 }
