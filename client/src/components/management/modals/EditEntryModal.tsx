@@ -39,15 +39,6 @@ export function EditEntryModal({ isOpen, onClose, onSave, entry }: EditEntryModa
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const baseEntry = {
-            ...entry,
-            title: formData.title,
-            author: formData.author ? formData.author.split(',').map(a => a.trim()) : undefined,
-            datePublished: formData.datePublished || undefined,
-            createdAt: formData.createdAt,
-            uri: formData.uri || undefined,
-        };
-
         let updatedEntry: EditableContent = entry;
         let dateChanged = entry.createdAt !== updatedEntry.createdAt
         if (dateChanged) {
