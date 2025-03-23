@@ -3,8 +3,8 @@ import { AutomergeUrl } from "@automerge/automerge-repo";
 
 export type IndexItem = {
     automergeUrl: AutomergeUrl
-    name: string
     createdAt: string
+    name: string
 }
 
 export type Index = {
