@@ -40,17 +40,7 @@ export function CollectionManager({ repo }: { repo: Repo }) {
 
     return (
         <div>
-            <Header
-                isPublicView={true}
-                showFilters={false}
-                setShowFilters={() => { }}
-                isEditMode={false}
-                setIsEditMode={() => { }}
-                setIsAddModalOpen={() => { }}
-                selectedTypes={new Set()}
-                setSelectedTypes={() => { }}
-                setDebouncedQuery={() => { }}
-            />
+            <Header isPublicView={false} />
             <div className="pt-24 pb-20 bg-gray-50 min-h-screen">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <ul>

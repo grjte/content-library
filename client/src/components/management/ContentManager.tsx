@@ -14,6 +14,7 @@ import { useOAuthSession } from '../../context/ATProtoSessionContext';
 import { EditEntryModal } from './modals/EditEntryModal';
 import { LoginModal } from '../common/LoginModal';
 import { PublishModal } from './modals/PublishModal';
+import { ControlPanel } from '../display/ControlPanel';
 
 export function ContentManager({ collectionUrl }: { collectionUrl: AutomergeUrl }) {
     const repo = useContext(RepoContext) as Repo;
@@ -208,6 +209,10 @@ export function ContentManager({ collectionUrl }: { collectionUrl: AutomergeUrl 
     return (
         <div onClick={handleBackgroundClick}>
             <Header
+                isPublicView={false}
+            />
+
+            <ControlPanel
                 isPublicView={false}
                 showFilters={showFilters}
                 setShowFilters={setShowFilters}

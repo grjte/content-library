@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { getPublicEntries } from '../../api/entries';
 import dayjs from 'dayjs';
 import { ContentEntry } from './ContentEntry';
+import { ControlPanel } from './ControlPanel';
 
 export function ContentViewer() {
     const { did } = useParams();
@@ -69,6 +70,10 @@ export function ContentViewer() {
         return (
             <div onClick={() => setShowFilters(false)}>
                 <Header
+                    isPublicView={true}
+                />
+
+                <ControlPanel
                     isPublicView={true}
                     showFilters={showFilters}
                     setShowFilters={setShowFilters}
