@@ -17,6 +17,8 @@ type CollectionItem = {
  * @type CollectionIndex
  */
 export type CollectionIndex = {
+    createdAt: string;
+    name?: string;
     entries: {
         [key: EditableContent['id']]: CollectionItem
     }

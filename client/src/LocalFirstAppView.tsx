@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { AutomergeUrl, isValidAutomergeUrl, Repo } from "@automerge/automerge-repo"
 import { RepoContext } from "@automerge/automerge-repo-react-hooks"
-import { CollectionIndex } from "./types/automerge/collectionIndex";
 import { useNavigate } from "react-router-dom"
 import { ContentManager } from "./components/management/ContentManager"
 
@@ -16,6 +15,7 @@ export default function LocalFirstAppView({ repo }: { repo: Repo }) {
         let handle
         if (isValidAutomergeUrl(docUrl)) {
             handle = repo.find(docUrl)
+            // TODO: ensure the index exists and the collection is in it
             setCollectionUrl(handle.url)
         } else {
             navigate(`/collections`, { replace: true })

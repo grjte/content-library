@@ -2,16 +2,17 @@ import { AutomergeUrl, isValidAutomergeUrl, Repo } from "@automerge/automerge-re
 import { useEffect, useState, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { CollectionIndex } from "../../types/automerge/collectionIndex"
-import { Index } from "../../types/automerge/index"
+import { Index, IndexItem } from "../../types/automerge/index"
 import { Header } from "../Header"
+import dayjs from "dayjs"
 
 export function CollectionManager({ repo }: { repo: Repo }) {
-    const [collections, setCollections] = useState<AutomergeUrl[]>([])
+    const [collections, setCollections] = useState<IndexItem[]>([])
     const [indexUrl, setIndexUrl] = useState<AutomergeUrl | null>(null)
-    const [editingCollection, setEditingCollection] = useState<string | null>(null)
+    const [editingCollection, setEditingCollection] = useState<AutomergeUrl | null>(null)
     const [newName, setNewName] = useState("")
-    const [openMenu, setOpenMenu] = useState<string | null>(null)
-    const [deleteConfirmation, setDeleteConfirmation] = useState<string | null>(null)
+    const [openMenu, setOpenMenu] = useState<AutomergeUrl | null>(null)
+    const [deleteConfirmation, setDeleteConfirmation] = useState<AutomergeUrl | null>(null)
     const [nameError, setNameError] = useState<string>("")
     const navigate = useNavigate()
 
@@ -26,7 +27,7 @@ export function CollectionManager({ repo }: { repo: Repo }) {
         const loadCollections = async (indexUrl: AutomergeUrl) => {
             indexHandle = repo.find(indexUrl)
             const indexDoc = await indexHandle.doc() as Index
-            setCollections(indexDoc.collections)
+            setCollections(Object.values(indexDoc.collections))
         }
 
         // If no collection is specified by the URL, check the index doc and list collections.
@@ -36,32 +37,39 @@ export function CollectionManager({ repo }: { repo: Repo }) {
             setIndexUrl(indexUrl)
             loadCollections(indexUrl)
         } else {
-            const collectionHandle = repo.create<CollectionIndex>({
-                entries: {},
-            })
-
             // create a new index doc if it doesn't exist and navigate to it
             indexHandle = repo.create<Index>({
-                collections: [collectionHandle.url],
+                collections: {},
             })
             setIndexUrl(indexHandle.url)
             localStorage.setItem('content-library-index', indexHandle.url)
-            navigate(`#${collectionHandle.url}`)
+            // then create an initial collection
+            createCollection()
         }
 
     }, [])
 
     const createCollection = () => {
         const collectionHandle = repo.create<CollectionIndex>({
+            createdAt: dayjs().toISOString(),
             entries: {},
+        })
+
+        const name = collections.length === 0 ? "default" : collectionHandle.url
+        collectionHandle.change(doc => {
+            doc.name = name
         })
 
         const indexHandle = repo.find<Index>(indexUrl!)
         indexHandle.change(doc => {
-            doc.collections.push(collectionHandle.url)
+            doc.collections[collectionHandle.url] = {
+                automergeUrl: collectionHandle.url,
+                name: name,
+                createdAt: dayjs().toISOString()
+            }
         })
 
-        navigate(`#${collectionHandle.url}`)
+        navigate(`/#${collectionHandle.url}`)
     }
 
     const validateName = (name: string): boolean => {
@@ -73,7 +81,7 @@ export function CollectionManager({ repo }: { repo: Repo }) {
             setNameError("Name is too long (max 50 characters)")
             return false
         }
-        if (collections.includes(name)) {
+        if (collections.some(collection => collection.name === name)) {
             setNameError("A collection with this name already exists")
             return false
         }
@@ -81,27 +89,47 @@ export function CollectionManager({ repo }: { repo: Repo }) {
         return true
     }
 
-    const deleteCollection = (collectionUrl: string) => {
+    const deleteCollection = (collectionUrl: AutomergeUrl) => {
         const indexHandle = repo.find<Index>(indexUrl!)
         indexHandle.change(doc => {
-            doc.collections = doc.collections.filter(url => url !== collectionUrl)
+            delete doc.collections[collectionUrl]
         })
+        setCollections(collections.filter(collection => collection.automergeUrl !== collectionUrl))
         setDeleteConfirmation(null)
         setOpenMenu(null)
     }
 
-    const startEditing = (collectionUrl: string) => {
+    const startEditing = (collectionUrl: AutomergeUrl) => {
         setEditingCollection(collectionUrl)
-        setNewName(collectionUrl)
+        setNewName(collections.find(collection => collection.automergeUrl === collectionUrl)?.name || "")
         setNameError("")
         setOpenMenu(null)
     }
 
-    const saveEdit = (collectionUrl: string) => {
+    const saveEdit = (collectionUrl: AutomergeUrl) => {
         if (!validateName(newName)) {
             return
         }
-        // Note: Implement actual rename logic here
+
+        // Update the collection name in the collection document
+        const collectionHandle = repo.find<CollectionIndex>(collectionUrl)
+        collectionHandle.change(doc => {
+            doc.name = newName
+        })
+
+        // Update the collection name in the index document
+        const indexHandle = repo.find<Index>(indexUrl!)
+        indexHandle.change(doc => {
+            doc.collections[collectionUrl].name = newName
+        })
+
+        // Update local state
+        setCollections(collections.map(collection =>
+            collection.automergeUrl === collectionUrl
+                ? { ...collection, name: newName }
+                : collection
+        ))
+
         setEditingCollection(null)
         setNewName("")
         setNameError("")
@@ -138,14 +166,14 @@ export function CollectionManager({ repo }: { repo: Repo }) {
                         ) : (
                             <ul className="divide-y divide-gray-200">
                                 {collections.map((collection) => (
-                                    <li key={collection} className="py-3">
+                                    <li key={collection.automergeUrl} className="py-3">
                                         <div className="flex items-center justify-between group p-2 hover:bg-gray-50 rounded-md transition-colors">
                                             <div className="flex items-center flex-grow">
                                                 <svg className="w-5 h-5 text-gray-400 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                                                 </svg>
 
-                                                {editingCollection === collection ? (
+                                                {editingCollection === collection.automergeUrl ? (
                                                     <div className="flex-grow">
                                                         <div className="flex items-center">
                                                             <input
@@ -159,7 +187,7 @@ export function CollectionManager({ repo }: { repo: Repo }) {
                                                                 autoFocus
                                                             />
                                                             <button
-                                                                onClick={() => saveEdit(collection)}
+                                                                onClick={() => saveEdit(collection.automergeUrl)}
                                                                 className="ml-2 text-green-600 hover:text-green-700"
                                                                 disabled={!!nameError}
                                                             >
@@ -185,11 +213,11 @@ export function CollectionManager({ repo }: { repo: Repo }) {
                                                     </div>
                                                 ) : (
                                                     <Link
-                                                        to={`/#${collection}`}
+                                                        to={`/#${collection.automergeUrl}`}
                                                         className="flex-grow flex items-center"
                                                     >
                                                         <span className="text-sm font-medium text-gray-900 group-hover:text-blue-600">
-                                                            {collection}
+                                                            {collection.name}
                                                         </span>
                                                     </Link>
                                                 )}
@@ -199,7 +227,7 @@ export function CollectionManager({ repo }: { repo: Repo }) {
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation()
-                                                        setOpenMenu(openMenu === collection ? null : collection)
+                                                        setOpenMenu(openMenu === collection.automergeUrl ? null : collection.automergeUrl)
                                                     }}
                                                     className="p-1 hover:bg-gray-100 rounded-full"
                                                 >
@@ -208,21 +236,21 @@ export function CollectionManager({ repo }: { repo: Repo }) {
                                                     </svg>
                                                 </button>
 
-                                                {openMenu === collection && (
+                                                {openMenu === collection.automergeUrl && (
                                                     <div
                                                         onClick={(e) => e.stopPropagation()}
                                                         className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10"
                                                     >
                                                         <div className="py-1">
                                                             <button
-                                                                onClick={() => startEditing(collection)}
+                                                                onClick={() => startEditing(collection.automergeUrl)}
                                                                 className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                             >
                                                                 Rename
                                                             </button>
                                                             <button
                                                                 onClick={() => {
-                                                                    setDeleteConfirmation(collection)
+                                                                    setDeleteConfirmation(collection.automergeUrl)
                                                                     setOpenMenu(null)
                                                                 }}
                                                                 className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
