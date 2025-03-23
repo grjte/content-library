@@ -11,6 +11,7 @@ import LocalFirstAppView from "./LocalFirstAppView.tsx"
 import { BrowserOAuthClient, OAuthSession } from '@atproto/oauth-client-browser'
 import { ATProtoSessionContext } from './context/ATProtoSessionContext.tsx'
 import AtProtoAppView from './AtProtoAppView.tsx'
+import { CollectionManager } from './components/management/CollectionManager.tsx'
 
 // === AT PROTO ====================================================================================
 const client = new BrowserOAuthClient({
@@ -56,9 +57,9 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LocalFirstAppView repo={repo} />} />
-          <Route path="/#" element={<LocalFirstAppView repo={repo} />} />
+          <Route path="/collections" element={<CollectionManager repo={repo} />} />
           <Route path="/:did/*" element={<AtProtoAppView />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to="/collections" replace />} />
         </Routes>
       </BrowserRouter>
     </ATProtoSessionContext.Provider>

@@ -1,10 +1,11 @@
+import { AutomergeUrl } from "@automerge/automerge-repo";
 import { EditableContent } from "./editableContent";
 
 /**
  * Index for editable entries managed by Automerge
- * @type IndexEntry
+ * @type CollectionItem
  */
-export type IndexEntry = {
+type CollectionItem = {
     type: EditableContent['content']['$type'];
     date: EditableContent['createdAt'];
     automergeUrl: EditableContent['automergeUrl'];
@@ -13,16 +14,10 @@ export type IndexEntry = {
 
 /**
  * Index for editable entries managed by Automerge
- * @type IndexEntries
+ * @type CollectionIndex
  */
-export type IndexEntries = {
-    [key: EditableContent['id']]: IndexEntry
-}
-
-/**
- * Index for editable entries managed by Automerge
- * @type IndexDoc
- */
-export type IndexDoc = {
-    entries: IndexEntries
+export type CollectionIndex = {
+    entries: {
+        [key: EditableContent['id']]: CollectionItem
+    }
 }

@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { Content, DisplayContent, editableToLexicon, LexiconRecord, lexiconToDisplay, $type } from "../types/content";
-import { IndexDoc } from "../types/automerge/indexDoc";
+import { CollectionIndex } from "../types/automerge/CollectionIndex";
 import { EditableContent, createEditableContent } from "../types/automerge/editableContent";
 import { AutomergeUrl, Repo } from "@automerge/automerge-repo";
 import AtpAgent, { Agent, RichText } from "@atproto/api";
@@ -9,13 +9,13 @@ import { OAuthSession } from "@atproto/oauth-client-browser";
 // // TODO: should probably use an index for this instead of pulling all public entries
 // export const updateLocalFromPublic = async (repo: Repo, privateIndexUrl: AutomergeUrl, did: string) => {
 //     try {
-//         const indexHandle = repo.find<IndexDoc>(privateIndexUrl);
-//         const indexDoc = await indexHandle.doc() as IndexDoc;
+//         const indexHandle = repo.find<CollectionIndex>(privateIndexUrl);
+//         const CollectionIndex = await indexHandle.doc() as CollectionIndex;
 //         const publicEntries = await getPublicEntries(did);
 
 //         // if it does not exist, add it locally
 //         publicEntries.forEach((entry) => {
-//             if (!indexDoc.entries[entry.id]) {
+//             if (!CollectionIndex.entries[entry.id]) {
 //                 // Create a new document using the repo
 //                 createEntry(repo, privateIndexUrl, entry);
 //             } else {
@@ -46,7 +46,7 @@ export const createEntry = async (repo: Repo, privateIndexUrl: AutomergeUrl, con
             Object.assign(doc, entry);
         });
 
-        const indexHandle = repo.find<IndexDoc>(privateIndexUrl);
+        const indexHandle = repo.find<CollectionIndex>(privateIndexUrl);
         if (!indexHandle.isReady()) {
             await new Promise<void>((resolve) => {
                 indexHandle.on('change', () => resolve());
@@ -157,7 +157,7 @@ export const updateLocalEntry = async (repo: Repo, privateIndexUrl: AutomergeUrl
 
         // if the createdAt is different, update the index
         if (dateChanged) {
-            const indexHandle = repo.find<IndexDoc>(privateIndexUrl);
+            const indexHandle = repo.find<CollectionIndex>(privateIndexUrl);
             indexHandle.change((doc) => {
                 doc.entries[updatedEntry.id] = {
                     type: updatedEntry.content.$type,

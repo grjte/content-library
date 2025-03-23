@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { AutomergeUrl, Repo } from '@automerge/automerge-repo'
 import { RepoContext, useDocument } from '@automerge/automerge-repo-react-hooks';
-import { IndexDoc } from '../../types/automerge/indexDoc';
+import { CollectionIndex } from '../../types/automerge/collectionIndex';
 import { EditableContent } from '../../types/automerge/editableContent';
 import dayjs from 'dayjs';
 import { Book, Content, LexiconId, PodcastEpisode, Movie, TvShow, Uri } from '../../types/content';
@@ -15,9 +15,9 @@ import { EditEntryModal } from './modals/EditEntryModal';
 import { LoginModal } from '../common/LoginModal';
 import { PublishModal } from './modals/PublishModal';
 
-export function ContentManager({ rootDocUrl }: { rootDocUrl: AutomergeUrl }) {
+export function ContentManager({ collectionUrl }: { collectionUrl: AutomergeUrl }) {
     const repo = useContext(RepoContext) as Repo;
-    const [indexDoc, changeIndexDoc] = useDocument<IndexDoc>(rootDocUrl);
+    const [CollectionIndex, changeCollectionIndex] = useDocument<CollectionIndex>(collectionUrl);
     const session = useOAuthSession();
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
@@ -41,10 +41,10 @@ export function ContentManager({ rootDocUrl }: { rootDocUrl: AutomergeUrl }) {
     // Load all content documents on mount
     useEffect(() => {
         const loadDocuments = async () => {
-            if (indexDoc && indexDoc.entries) {
+            if (CollectionIndex && CollectionIndex.entries) {
                 try {
                     // Create an array of promises for loading documents
-                    const documentPromises = Object.values(indexDoc.entries).map(entry => {
+                    const documentPromises = Object.values(CollectionIndex.entries).map(entry => {
                         return repo.find(entry.automergeUrl).doc()
                     });
 
@@ -66,7 +66,7 @@ export function ContentManager({ rootDocUrl }: { rootDocUrl: AutomergeUrl }) {
         };
 
         loadDocuments();
-    }, [repo, indexDoc, indexDoc?.entries]);  // Add indexDoc.entries to dependencies
+    }, [repo, CollectionIndex, CollectionIndex?.entries]);  // Add CollectionIndex.entries to dependencies
 
     const filteredEntries = entries.filter(entry => {
         const matchesType = selectedTypes.has(entry.content.$type as LexiconId);
@@ -84,7 +84,7 @@ export function ContentManager({ rootDocUrl }: { rootDocUrl: AutomergeUrl }) {
     const handleAddContent = async (entry: Content) => {
         try {
             if (!repo) throw new Error('Repo not found');
-            const entryId = await createEntry(repo, rootDocUrl, entry);
+            const entryId = await createEntry(repo, collectionUrl, entry);
             if (!entryId) throw new Error('Failed to create entry');
         } catch (e) {
             console.error('Error adding content:', e);
@@ -107,7 +107,7 @@ export function ContentManager({ rootDocUrl }: { rootDocUrl: AutomergeUrl }) {
         // Remove from repo
         await repo!.delete(entry.automergeUrl!);
         // Update the index
-        changeIndexDoc(d => {
+        changeCollectionIndex(d => {
             delete d.entries[entry.id];
         })
     };
@@ -131,7 +131,7 @@ export function ContentManager({ rootDocUrl }: { rootDocUrl: AutomergeUrl }) {
             }
         }
 
-        await updateLocalEntry(repo!, rootDocUrl, updatedEntry, dateChanged);
+        await updateLocalEntry(repo!, collectionUrl, updatedEntry, dateChanged);
 
         // Update this entry in the local state
         setEntries((prev: EditableContent[]) => prev.map(entry => {
@@ -169,7 +169,7 @@ export function ContentManager({ rootDocUrl }: { rootDocUrl: AutomergeUrl }) {
             }));
 
             // Update the private index
-            changeIndexDoc(d => {
+            changeCollectionIndex(d => {
                 d.entries[selectedEntry.id] = {
                     ...d.entries[selectedEntry.id],
                     isPublic: true,
