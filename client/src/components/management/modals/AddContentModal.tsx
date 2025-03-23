@@ -30,7 +30,7 @@ export function AddContentModal({ isOpen, onClose, onAdd }: AddContentModalProps
             setIsLoading(true);
             setSearchResults([]);
             if (searchType === Uri.$type) {
-                handleUrl();
+                await handleUrl();
             } else {
                 const results = await searchContent(searchType, searchQuery);
                 setSearchResults(results);
@@ -55,12 +55,10 @@ export function AddContentModal({ isOpen, onClose, onAdd }: AddContentModalProps
                 uri: urlInput
             } as Uri.Type;
             handleContentSelect(content);
-        } finally {
-            setIsLoading(false);
-            resetForm();
-            onClose();
         }
 
+        resetForm();
+        onClose();
     }
 
     const resetForm = () => {
