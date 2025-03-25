@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { Content, DisplayContent, editableToLexicon, LexiconRecord, lexiconToDisplay, $type } from "../types/content";
 import { CollectionIndex } from "../types/automerge/CollectionIndex";
-import { EditableContent, createEditableContent } from "../types/automerge/editableContent";
+import { EditableContent, createEditableContent } from "../types/automerge/EditableContent";
 import { AutomergeUrl, Repo } from "@automerge/automerge-repo";
 import AtpAgent, { Agent, RichText } from "@atproto/api";
 import { OAuthSession } from "@atproto/oauth-client-browser";

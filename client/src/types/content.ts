@@ -1,6 +1,6 @@
 import { OmitKey } from "../lexicon/util";
 import { Record } from "../lexicon/types/app/lofisky/library/content";
-import { EditableContent } from "./automerge/editableContent";
+import { EditableContent } from "./automerge/EditableContent";
 
 import * as Article from "./lexicon/article";
 import * as Book from "./lexicon/book";

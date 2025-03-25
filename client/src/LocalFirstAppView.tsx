@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import { Outlet, useParams, useLocation } from "react-router-dom"
 import { AutomergeUrl, isValidAutomergeUrl, Repo } from "@automerge/automerge-repo"
 import { RepoContext } from "@automerge/automerge-repo-react-hooks"
-import { useNavigate } from "react-router-dom"
-import { ContentManager } from "./components/management/ContentManager"
-import { Index } from "./types/automerge";
-import dayjs from "dayjs";
-import { CollectionIndex } from "./types/automerge/collectionIndex";
+import { useEffect } from "react"
+import { Index } from "./types/automerge"
+import { CollectionIndex } from "./types/automerge/CollectionIndex"
+import dayjs from "dayjs"
 
 export default function LocalFirstAppView({ repo }: { repo: Repo }) {
-    const navigate = useNavigate();
-    const [collectionUrl, setCollectionUrl] = useState<AutomergeUrl | null>();
+    const { collection } = useParams();
+    const collectionUrl = collection as AutomergeUrl;
 
-    // Get the collection doc from the URL
+    // Update index when navigating to a collection
     useEffect(() => {
-        const updateIndex = async (collectionUrl: AutomergeUrl) => {
+        const updateIndex = async () => {
+            if (!collectionUrl) return;
             // get the existing index doc or create a new one
             const indexUrl = localStorage.getItem('content-library-index')
             let indexHandle
@@ -46,24 +46,12 @@ export default function LocalFirstAppView({ repo }: { repo: Repo }) {
             // TODO: in the future, update state when it's shared with someone who's not the same user on a different device
         }
 
-        const docUrl = window.location?.hash?.substring(1)
-
-        let handle
-        if (isValidAutomergeUrl(docUrl)) {
-            handle = repo.find(docUrl)
-            updateIndex(handle.url)
-            setCollectionUrl(handle.url)
-        } else {
-            navigate(`/collections`, { replace: true })
-        }
-
-    }, [])
+        updateIndex()
+    }, [repo, collectionUrl])
 
     return (
-        collectionUrl == null
-            ? <p>Loading...</p>
-            : <RepoContext.Provider value={repo}>
-                <ContentManager collectionUrl={collectionUrl!} />
-            </RepoContext.Provider>
+        <RepoContext.Provider value={repo}>
+            <Outlet />
+        </RepoContext.Provider>
     )
 }

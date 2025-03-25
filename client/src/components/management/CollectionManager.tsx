@@ -1,12 +1,14 @@
 import { AutomergeUrl, isValidAutomergeUrl, Repo } from "@automerge/automerge-repo"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { CollectionIndex } from "../../types/automerge/collectionIndex"
+import { CollectionIndex } from "../../types/automerge/CollectionIndex"
 import { Index, IndexItem } from "../../types/automerge/index"
 import { Header } from "../Header"
 import dayjs from "dayjs"
+import { RepoContext } from "@automerge/automerge-repo-react-hooks"
 
-export function CollectionManager({ repo }: { repo: Repo }) {
+export function CollectionManager() {
+    const repo = useContext(RepoContext) as Repo;
     const [collections, setCollections] = useState<IndexItem[]>([])
     const [indexUrl, setIndexUrl] = useState<AutomergeUrl | null>(null)
     const [editingCollection, setEditingCollection] = useState<AutomergeUrl | null>(null)
@@ -69,7 +71,7 @@ export function CollectionManager({ repo }: { repo: Repo }) {
             }
         })
 
-        navigate(`/#${collectionHandle.url}`)
+        navigate(`/collections/${collectionHandle.url}`)
     }
 
     const validateName = (name: string): boolean => {
@@ -213,7 +215,7 @@ export function CollectionManager({ repo }: { repo: Repo }) {
                                                     </div>
                                                 ) : (
                                                     <Link
-                                                        to={`/#${collection.automergeUrl}`}
+                                                        to={`/collections/${collection.automergeUrl}`}
                                                         className="flex-grow flex items-center"
                                                     >
                                                         <span className="text-sm font-medium text-gray-900 group-hover:text-blue-600">

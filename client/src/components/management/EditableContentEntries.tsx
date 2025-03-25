@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Content } from "../../types/content";
-import { EditableContent } from "../../types/automerge/editableContent";
+import { EditableContent } from "../../types/automerge/EditableContent";
 import { ContentEntry } from "../display/ContentEntry";
 import dayjs from "dayjs";
 

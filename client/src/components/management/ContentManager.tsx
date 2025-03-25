@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
 import { AutomergeUrl, Repo } from '@automerge/automerge-repo'
 import { RepoContext, useDocument } from '@automerge/automerge-repo-react-hooks';
-import { CollectionIndex } from '../../types/automerge/collectionIndex';
-import { EditableContent } from '../../types/automerge/editableContent';
+import { CollectionIndex } from '../../types/automerge/CollectionIndex';
+import { EditableContent } from '../../types/automerge/EditableContent';
 import dayjs from 'dayjs';
 import { Book, Content, LexiconId, PodcastEpisode, Movie, TvShow, Uri } from '../../types/content';
 import { Header } from '../Header';
@@ -15,8 +15,13 @@ import { EditEntryModal } from './modals/EditEntryModal';
 import { LoginModal } from '../common/LoginModal';
 import { PublishModal } from './modals/PublishModal';
 import { ControlPanel } from '../display/ControlPanel';
+import { useParams } from 'react-router-dom';
 
-export function ContentManager({ collectionUrl }: { collectionUrl: AutomergeUrl }) {
+export function ContentManager() {
+    const { collection } = useParams();
+    if (!collection) return null;
+    const collectionUrl = collection as AutomergeUrl;
+
     const repo = useContext(RepoContext) as Repo;
     const [CollectionIndex, changeCollectionIndex] = useDocument<CollectionIndex>(collectionUrl);
     const session = useOAuthSession();
