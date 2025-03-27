@@ -27,7 +27,7 @@ RUN npm run build
 # Prepare the Server Build
 #############################
 WORKDIR /app/server
-# Copy the built client files into the server’s public folder
+# Copy the built client files into the server's public folder
 RUN mkdir -p public && cp -R ../client/dist/* public/
 # Install server dependencies and build (e.g. transpile TypeScript)
 RUN npm install

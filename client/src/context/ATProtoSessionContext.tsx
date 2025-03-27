@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { BrowserOAuthClient, OAuthSession } from "@atproto/oauth-client-browser"
 
 export type ATProtoSessionContextType = {
