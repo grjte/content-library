@@ -55,8 +55,8 @@ COPY server ./server
 COPY client ./client
 
 # Install dependencies for both server and client
-RUN cd server && npm install
 RUN cd client && npm install
+RUN cd server && npm install
 
 # Expose ports for the Express server and Vite dev server
 EXPOSE 3030

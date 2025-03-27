@@ -2,14 +2,15 @@ services:
   app:
     build:
       context: .
-      target: development
-      dockerfile: Dockerfile
+      target: production
+    restart: always
     ports:
-      - "3030:3030" # Express server
-      - "5173:5173" # Vite dev server
-    volumes:
-      - ./server:/app/server
-      - ./client:/app/client
-      # Optionally avoid overwriting node_modules in the container:
-      - /app/server/node_modules
-      - /app/client/node_modules
+      - "127.0.0.1:3030:3030"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - web
+
+networks:
+  web:
+    driver: bridge
