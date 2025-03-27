@@ -1,6 +1,6 @@
 {
     "lexicon": 1,
-    "id": "app.lofisky.library.content.movie",
+    "id": "xyz.groundmist.library.content.movie",
     "defs": {
         "main": {
             "type": "object",

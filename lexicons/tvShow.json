@@ -1,6 +1,6 @@
 {
     "lexicon": 1,
-    "id": "app.lofisky.library.content.tvShow",
+    "id": "xyz.groundmist.library.content.tvShow",
     "defs": {
         "main": {
             "type": "object",

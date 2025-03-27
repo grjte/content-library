@@ -1,9 +1,9 @@
 {
-    "client_id": "https://library.lofisky.app/client-metadata.json",
+    "client_id": "https://library.groundmist.xyz/client-metadata.json",
     "client_name": "ContentLibrary",
-    "client_uri": "https://library.lofisky.app",
+    "client_uri": "https://library.groundmist.xyz",
     "redirect_uris": [
-        "https://library.lofisky.app"
+        "https://library.groundmist.xyz"
     ],
     "scope": "atproto transition:generic",
     "grant_types": [

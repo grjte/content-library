@@ -10,9 +10,9 @@ import {
 import { type $Typed, is$typed, maybe$typed } from './util.js'
 
 export const schemaDict = {
-  AppLofiskyLibraryContentArticle: {
+  XyzGroundmistLibraryContentArticle: {
     lexicon: 1,
-    id: 'app.lofisky.library.content.article',
+    id: 'xyz.groundmist.library.content.article',
     defs: {
       main: {
         type: 'object',
@@ -47,9 +47,9 @@ export const schemaDict = {
       },
     },
   },
-  AppLofiskyLibraryContentBook: {
+  XyzGroundmistLibraryContentBook: {
     lexicon: 1,
-    id: 'app.lofisky.library.content.book',
+    id: 'xyz.groundmist.library.content.book',
     defs: {
       main: {
         type: 'object',
@@ -86,9 +86,9 @@ export const schemaDict = {
       },
     },
   },
-  AppLofiskyLibraryContent: {
+  XyzGroundmistLibraryContent: {
     lexicon: 1,
-    id: 'app.lofisky.library.content',
+    id: 'xyz.groundmist.library.content',
     description:
       'Schema for content records of various CreativeWork types (Article, Book, PodcastEpisode, Movie, TvShow, etc.)',
     defs: {
@@ -109,16 +109,16 @@ export const schemaDict = {
             content: {
               type: 'union',
               refs: [
-                'lex:app.lofisky.library.content.article',
-                'lex:app.lofisky.library.content.book',
-                'lex:app.lofisky.library.content.movie',
-                'lex:app.lofisky.library.content.paper',
-                'lex:app.lofisky.library.content.podcast',
-                'lex:app.lofisky.library.content.podcastEpisode',
-                'lex:app.lofisky.library.content.thread',
-                'lex:app.lofisky.library.content.tvShow',
-                'lex:app.lofisky.library.content.uri',
-                'lex:app.lofisky.library.content.video',
+                'lex:xyz.groundmist.library.content.article',
+                'lex:xyz.groundmist.library.content.book',
+                'lex:xyz.groundmist.library.content.movie',
+                'lex:xyz.groundmist.library.content.paper',
+                'lex:xyz.groundmist.library.content.podcast',
+                'lex:xyz.groundmist.library.content.podcastEpisode',
+                'lex:xyz.groundmist.library.content.thread',
+                'lex:xyz.groundmist.library.content.tvShow',
+                'lex:xyz.groundmist.library.content.uri',
+                'lex:xyz.groundmist.library.content.video',
               ],
             },
           },
@@ -126,9 +126,9 @@ export const schemaDict = {
       },
     },
   },
-  AppLofiskyLibraryContentMovie: {
+  XyzGroundmistLibraryContentMovie: {
     lexicon: 1,
-    id: 'app.lofisky.library.content.movie',
+    id: 'xyz.groundmist.library.content.movie',
     defs: {
       main: {
         type: 'object',
@@ -186,9 +186,9 @@ export const schemaDict = {
       },
     },
   },
-  AppLofiskyLibraryContentPaper: {
+  XyzGroundmistLibraryContentPaper: {
     lexicon: 1,
-    id: 'app.lofisky.library.content.paper',
+    id: 'xyz.groundmist.library.content.paper',
     defs: {
       main: {
         type: 'object',
@@ -223,9 +223,9 @@ export const schemaDict = {
       },
     },
   },
-  AppLofiskyLibraryContentPodcast: {
+  XyzGroundmistLibraryContentPodcast: {
     lexicon: 1,
-    id: 'app.lofisky.library.content.podcast',
+    id: 'xyz.groundmist.library.content.podcast',
     defs: {
       main: {
         type: 'object',
@@ -259,9 +259,9 @@ export const schemaDict = {
       },
     },
   },
-  AppLofiskyLibraryContentPodcastEpisode: {
+  XyzGroundmistLibraryContentPodcastEpisode: {
     lexicon: 1,
-    id: 'app.lofisky.library.content.podcastEpisode',
+    id: 'xyz.groundmist.library.content.podcastEpisode',
     defs: {
       main: {
         type: 'object',
@@ -308,9 +308,9 @@ export const schemaDict = {
       },
     },
   },
-  AppLofiskyLibraryContentThread: {
+  XyzGroundmistLibraryContentThread: {
     lexicon: 1,
-    id: 'app.lofisky.library.content.thread',
+    id: 'xyz.groundmist.library.content.thread',
     defs: {
       main: {
         type: 'object',
@@ -345,9 +345,9 @@ export const schemaDict = {
       },
     },
   },
-  AppLofiskyLibraryContentTvShow: {
+  XyzGroundmistLibraryContentTvShow: {
     lexicon: 1,
-    id: 'app.lofisky.library.content.tvShow',
+    id: 'xyz.groundmist.library.content.tvShow',
     defs: {
       main: {
         type: 'object',
@@ -405,9 +405,9 @@ export const schemaDict = {
       },
     },
   },
-  AppLofiskyLibraryContentUri: {
+  XyzGroundmistLibraryContentUri: {
     lexicon: 1,
-    id: 'app.lofisky.library.content.uri',
+    id: 'xyz.groundmist.library.content.uri',
     defs: {
       main: {
         type: 'object',
@@ -442,9 +442,9 @@ export const schemaDict = {
       },
     },
   },
-  AppLofiskyLibraryContentVideo: {
+  XyzGroundmistLibraryContentVideo: {
     lexicon: 1,
-    id: 'app.lofisky.library.content.video',
+    id: 'xyz.groundmist.library.content.video',
     defs: {
       main: {
         type: 'object',
@@ -512,16 +512,16 @@ export function validate(
 }
 
 export const ids = {
-  AppLofiskyLibraryContentArticle: 'app.lofisky.library.content.article',
-  AppLofiskyLibraryContentBook: 'app.lofisky.library.content.book',
-  AppLofiskyLibraryContent: 'app.lofisky.library.content',
-  AppLofiskyLibraryContentMovie: 'app.lofisky.library.content.movie',
-  AppLofiskyLibraryContentPaper: 'app.lofisky.library.content.paper',
-  AppLofiskyLibraryContentPodcast: 'app.lofisky.library.content.podcast',
-  AppLofiskyLibraryContentPodcastEpisode:
-    'app.lofisky.library.content.podcastEpisode',
-  AppLofiskyLibraryContentThread: 'app.lofisky.library.content.thread',
-  AppLofiskyLibraryContentTvShow: 'app.lofisky.library.content.tvShow',
-  AppLofiskyLibraryContentUri: 'app.lofisky.library.content.uri',
-  AppLofiskyLibraryContentVideo: 'app.lofisky.library.content.video',
+  XyzGroundmistLibraryContentArticle: 'xyz.groundmist.library.content.article',
+  XyzGroundmistLibraryContentBook: 'xyz.groundmist.library.content.book',
+  XyzGroundmistLibraryContent: 'xyz.groundmist.library.content',
+  XyzGroundmistLibraryContentMovie: 'xyz.groundmist.library.content.movie',
+  XyzGroundmistLibraryContentPaper: 'xyz.groundmist.library.content.paper',
+  XyzGroundmistLibraryContentPodcast: 'xyz.groundmist.library.content.podcast',
+  XyzGroundmistLibraryContentPodcastEpisode:
+    'xyz.groundmist.library.content.podcastEpisode',
+  XyzGroundmistLibraryContentThread: 'xyz.groundmist.library.content.thread',
+  XyzGroundmistLibraryContentTvShow: 'xyz.groundmist.library.content.tvShow',
+  XyzGroundmistLibraryContentUri: 'xyz.groundmist.library.content.uri',
+  XyzGroundmistLibraryContentVideo: 'xyz.groundmist.library.content.video',
 } as const

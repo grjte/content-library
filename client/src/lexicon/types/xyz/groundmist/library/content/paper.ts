@@ -12,15 +12,15 @@ import {
 
 const is$typed = _is$typed,
   validate = _validate
-const id = 'app.lofisky.library.content.article'
+const id = 'xyz.groundmist.library.content.paper'
 
-/** Article type extending CreativeWork with a required URL override. */
+/** Paper type extending CreativeWork with a required URL override. */
 export interface Main {
-  $type?: 'app.lofisky.library.content.article'
+  $type?: 'xyz.groundmist.library.content.paper'
   author?: string[]
   datePublished?: string
   description?: string
-  title?: string
+  title: string
   thumbnailUrl?: string
   uri: string
 }

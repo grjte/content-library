@@ -1,6 +1,6 @@
 {
     "lexicon": 1,
-    "id": "app.lofisky.library.content.book",
+    "id": "xyz.groundmist.library.content.book",
     "defs": {
         "main": {
             "type": "object",

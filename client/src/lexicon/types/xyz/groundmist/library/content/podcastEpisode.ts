@@ -12,22 +12,21 @@ import {
 
 const is$typed = _is$typed,
   validate = _validate
-const id = 'app.lofisky.library.content.tvShow'
+const id = 'xyz.groundmist.library.content.podcastEpisode'
 
-/** TvShow type extending CreativeWork. */
+/** PodcastEpisode type extending CreativeWork with additional podcast fields. */
 export interface Main {
-  $type?: 'app.lofisky.library.content.tvShow'
+  $type?: 'xyz.groundmist.library.content.podcastEpisode'
   author?: string[]
   datePublished?: string
   description?: string
   title: string
   thumbnailUrl?: string
   uri?: string
-  actors?: string[]
-  director?: string[]
-  imdbId?: string
-  genre?: string
-  writer?: string[]
+  duration?: string
+  episodeNumber?: number
+  podcastName: string
+  seasonNumber?: number
 }
 
 const hashMain = 'main'

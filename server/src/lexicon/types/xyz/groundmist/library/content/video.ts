@@ -12,18 +12,17 @@ import {
 
 const is$typed = _is$typed,
   validate = _validate
-const id = 'app.lofisky.library.content.book'
+const id = 'xyz.groundmist.library.content.video'
 
-/** Book type extending CreativeWork. */
+/** Video type extending CreativeWork with a required URL override. */
 export interface Main {
-  $type?: 'app.lofisky.library.content.book'
+  $type?: 'xyz.groundmist.library.content.video'
   author?: string[]
   datePublished?: string
   description?: string
   title: string
   thumbnailUrl?: string
-  uri?: string
-  publisher?: string
+  uri: string
 }
 
 const hashMain = 'main'

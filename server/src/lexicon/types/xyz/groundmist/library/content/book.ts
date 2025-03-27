@@ -12,17 +12,18 @@ import {
 
 const is$typed = _is$typed,
   validate = _validate
-const id = 'app.lofisky.library.content.thread'
+const id = 'xyz.groundmist.library.content.book'
 
-/** Thread type extending CreativeWork with a required URL override. */
+/** Book type extending CreativeWork. */
 export interface Main {
-  $type?: 'app.lofisky.library.content.thread'
+  $type?: 'xyz.groundmist.library.content.book'
   author?: string[]
   datePublished?: string
   description?: string
   title: string
   thumbnailUrl?: string
-  uri: string
+  uri?: string
+  publisher?: string
 }
 
 const hashMain = 'main'

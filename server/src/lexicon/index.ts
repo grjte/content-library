@@ -16,45 +16,45 @@ export function createServer(options?: XrpcOptions): Server {
 
 export class Server {
   xrpc: XrpcServer
-  app: AppNS
+  xyz: XyzNS
 
   constructor(options?: XrpcOptions) {
     this.xrpc = createXrpcServer(schemas, options)
-    this.app = new AppNS(this)
+    this.xyz = new XyzNS(this)
   }
 }
 
-export class AppNS {
+export class XyzNS {
   _server: Server
-  lofisky: AppLofiskyNS
+  groundmist: XyzGroundmistNS
 
   constructor(server: Server) {
     this._server = server
-    this.lofisky = new AppLofiskyNS(server)
+    this.groundmist = new XyzGroundmistNS(server)
   }
 }
 
-export class AppLofiskyNS {
+export class XyzGroundmistNS {
   _server: Server
-  library: AppLofiskyLibraryNS
+  library: XyzGroundmistLibraryNS
 
   constructor(server: Server) {
     this._server = server
-    this.library = new AppLofiskyLibraryNS(server)
+    this.library = new XyzGroundmistLibraryNS(server)
   }
 }
 
-export class AppLofiskyLibraryNS {
+export class XyzGroundmistLibraryNS {
   _server: Server
-  content: AppLofiskyLibraryContentNS
+  content: XyzGroundmistLibraryContentNS
 
   constructor(server: Server) {
     this._server = server
-    this.content = new AppLofiskyLibraryContentNS(server)
+    this.content = new XyzGroundmistLibraryContentNS(server)
   }
 }
 
-export class AppLofiskyLibraryContentNS {
+export class XyzGroundmistLibraryContentNS {
   _server: Server
 
   constructor(server: Server) {

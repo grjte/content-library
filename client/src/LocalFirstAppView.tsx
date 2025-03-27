@@ -26,7 +26,7 @@ export default function LocalFirstAppView({ repo }: { repo: Repo }) {
             const agent = new Agent(session)
             const pdsResponse = await agent.com.atproto.repo.getRecord({
                 repo: session.did,
-                collection: "app.lofisky.pss",
+                collection: "xyz.groundmist.pss",
                 rkey: "sync_server",
             })
             if (pdsResponse.success) {
@@ -41,7 +41,7 @@ export default function LocalFirstAppView({ repo }: { repo: Repo }) {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            lexiconAuthorityDomain: "app.lofisky.library",
+                            lexiconAuthorityDomain: "xyz.groundmist.library",
                         }),
                     });
                     const data = await pssResponse.json();

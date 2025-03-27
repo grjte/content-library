@@ -1,5 +1,5 @@
 import { OmitKey } from "../lexicon/util";
-import { Record } from "../lexicon/types/app/lofisky/library/content";
+import { Record } from "../lexicon/types/xyz/groundmist/library/content";
 import { EditableContent } from "./automerge/editableContent";
 
 import * as Article from "./lexicon/article";
@@ -19,7 +19,7 @@ export { Article, Book, Movie, Podcast, PodcastEpisode, Thread, TvShow, Uri, Vid
  * @type Content
  */
 export type Content = Article.Type | Book.Type | Movie.Type | Podcast.Type | PodcastEpisode.Type | Thread.Type | TvShow.Type | Uri.Type | Video.Type;
-export const $type = "app.lofisky.library.content";
+export const $type = "xyz.groundmist.library.content";
 
 /**
  * Type for UI display

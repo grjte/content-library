@@ -1,6 +1,6 @@
 {
     "lexicon": 1,
-    "id": "app.lofisky.library.content.podcastEpisode",
+    "id": "xyz.groundmist.library.content.podcastEpisode",
     "defs": {
         "main": {
             "type": "object",
