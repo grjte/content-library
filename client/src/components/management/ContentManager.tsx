@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
 import { AutomergeUrl, Repo } from '@automerge/automerge-repo'
 import { RepoContext, useDocument } from '@automerge/automerge-repo-react-hooks';
-import { CollectionIndex } from '../../types/automerge/CollectionIndex';
-import { EditableContent } from '../../types/automerge/EditableContent';
+import { CollectionIndex } from '../../types/automerge/collectionIndex';
+import { EditableContent } from '../../types/automerge/editableContent';
 import dayjs from 'dayjs';
 import { Book, Content, LexiconId, PodcastEpisode, Movie, TvShow, Uri } from '../../types/content';
 import { Header } from '../Header';

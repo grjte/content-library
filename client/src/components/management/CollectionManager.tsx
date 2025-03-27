@@ -1,7 +1,7 @@
 import { AutomergeUrl, isValidAutomergeUrl, Repo } from "@automerge/automerge-repo"
 import { useEffect, useState, useRef, useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { CollectionIndex } from "../../types/automerge/CollectionIndex"
+import { CollectionIndex } from "../../types/automerge/collectionIndex"
 import { Index, IndexItem } from "../../types/automerge/index"
 import { Header } from "../Header"
 import dayjs from "dayjs"

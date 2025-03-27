@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Book, PodcastEpisode, TvShow, Movie, Uri, Content, Article } from '../../../types/content';
-import { EditableContent } from '../../../types/automerge/EditableContent';
+import { EditableContent } from '../../../types/automerge/editableContent';
 import { Modal } from '../../common/Modal';
 import { Form } from '../../common/Form';
 import { FormInput, FormSelect } from '../../common/FormInput';

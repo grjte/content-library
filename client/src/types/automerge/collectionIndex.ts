@@ -1,5 +1,5 @@
 import { AutomergeUrl } from "@automerge/automerge-repo";
-import { EditableContent } from "./EditableContent";
+import { EditableContent } from "./editableContent";
 
 /**
  * Index for editable entries managed by Automerge

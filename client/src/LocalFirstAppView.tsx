@@ -3,7 +3,7 @@ import { AutomergeUrl, isValidAutomergeUrl, Repo } from "@automerge/automerge-re
 import { RepoContext } from "@automerge/automerge-repo-react-hooks"
 import { useEffect } from "react"
 import { Index } from "./types/automerge"
-import { CollectionIndex } from "./types/automerge/CollectionIndex"
+import { CollectionIndex } from "./types/automerge/collectionIndex"
 import dayjs from "dayjs"
 import { useOAuthSession } from "./context/ATProtoSessionContext"
 import { OAuthSession } from "@atproto/oauth-client-browser"
