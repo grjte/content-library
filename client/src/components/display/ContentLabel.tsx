@@ -13,7 +13,7 @@ const TYPE_CONFIG: Record<string, {
         icon: 'M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z'
     },
     [PodcastEpisode.$type]: {
-        icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z'
+        icon: 'M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z'
     },
     [TvShow.$type]: {
         icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z'
@@ -58,6 +58,8 @@ const getLabel = (entry: Content) => {
             return 'tv show'
         case 'xyz.groundmist.library.content.podcastEpisode':
             return 'podcast'
+        case 'xyz.groundmist.library.content.uri':
+            return 'link'
         default:
             return entry.$type.split('.').pop()
     }

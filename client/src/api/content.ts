@@ -17,18 +17,17 @@ export const searchContent = async (contentType: LexiconId, query: string): Prom
     const response = await fetch(url, options);
     const data = await response.json();
 
-    return data?.results || []
+    return data?.result || []
 }
 
 export const getOmdbRecord = async (contentType: typeof Movie.$type | typeof TvShow.$type, imdbID: string): Promise<Movie.Type | TvShow.Type> => {
-    const type = Movie.isType(contentType) ? "movie" : "tv"
+    const type = Movie.$type === contentType ? "movie" : "tv"
     const url = `https://${import.meta.env.VITE_APP_SERVER_URL}/api/get/${type}?id=${encodeURIComponent(imdbID)}`
     const options = {
         method: "get",
     }
     const response = await fetch(url, options);
     const data = await response.json();
-
     return data?.result || {}
 }
 
@@ -40,7 +39,7 @@ export const getPodcastEpisodes = async (podcastId: string): Promise<PodcastEpis
     const response = await fetch(url, options);
     const data = await response.json();
 
-    return data?.results || []
+    return data?.result || []
 }
 
 export const getUrlContent = async (urlInput: string, urlTitle: string): Promise<Uri.Type> => {
@@ -52,7 +51,7 @@ export const getUrlContent = async (urlInput: string, urlTitle: string): Promise
     let content = await response.json();
 
     if (urlTitle !== "") {
-        content.result.name = urlTitle;
+        content.result.title = urlTitle;
     }
 
     return content.result;

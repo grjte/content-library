@@ -1,4 +1,4 @@
-import { Content, Book, Movie, PodcastEpisode, TvShow } from "../../types/content";
+import { Content, Book, Movie, PodcastEpisode, TvShow, Uri } from "../../types/content";
 import { ReactNode } from "react";
 import { ContentIcon, ContentLabel } from "./ContentLabel";
 
@@ -122,6 +122,12 @@ const DesktopDisplay = ({ entry }: { entry: Content }) => (
                     {(TvShow.isType(entry)) && (
                         <span className="font-medium">
                             {entry.writer?.join(", ")} | {entry.actors?.join(", ")}
+                        </span>
+                    )}
+
+                    {(Uri.isType(entry)) && (
+                        <span className="mt-1 text-sm text-gray-500 line-clamp-2">
+                            {entry.uri}
                         </span>
                     )}
                 </div>

@@ -16,7 +16,7 @@ export function OmdbSearchResults({ isLoading, contentType, results, onSelect }:
     const handleSelect = async (omdbResult: Movie.Type | TvShow.Type) => {
         try {
             if (!omdbResult.imdbId) {
-                throw new Error(`IMDB id is missing from ${Movie.isType(contentType) ? "movie" : "tv show"} search result`)
+                throw new Error(`IMDB id is missing from ${Movie.$type === contentType ? "movie" : "tv show"} search result`)
             }
             const record = await getOmdbRecord(contentType, omdbResult.imdbId);
             onSelect(record)

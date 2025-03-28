@@ -49,8 +49,8 @@ export function AddContentModal({ isOpen, onClose, onAdd }: AddContentModalProps
             handleContentSelect(content);
         }
         catch (err) {
-            console.error('Error:', err);
             const content = {
+                $type: Uri.$type,
                 title: urlTitle || urlInput,
                 uri: urlInput
             } as Uri.Type;

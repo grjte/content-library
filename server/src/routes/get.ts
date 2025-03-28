@@ -12,6 +12,7 @@ import metascraperPublisher from 'metascraper-publisher';
 import metascraperTitle from 'metascraper-title';
 import metascraperUrl from 'metascraper-url';
 import { Movie, TvShow, PodcastEpisode, Uri } from '#/types/content'
+import { ensureSecureUrl, cleanContentEntry } from '#/helpers';
 
 const router = Router();
 
@@ -62,14 +63,13 @@ router.get("/get/podcast", async (req, res) => {
                 seasonNumber: doc.season,
                 podcastName: doc.podcastName || '',
                 datePublished: new Date(doc.datePublished * 1000).toISOString(),
-                uri: ensureSecureUrl(doc.link),
-                thumbnailUrl: ensureSecureUrl(doc.image),
+                uri: doc.link ? ensureSecureUrl(doc.link) : undefined,
+                thumbnailUrl: doc.image ? ensureSecureUrl(doc.image) : undefined,
             } as PodcastEpisode.Type
 
+
             // Remove any undefined values
-            const result = Object.fromEntries(
-                Object.entries(podcastEpisode).filter(([_, value]) => value !== undefined)
-            )
+            const result = cleanContentEntry(podcastEpisode)
             if (!PodcastEpisode.validate(result))
                 throw Error("Retrieved podcast episode data is invalid")
             return result
@@ -106,6 +106,7 @@ router.get("/get/movie", async (req, res) => {
         };
         const response = await fetch(url, options)
         const data = await response.json()
+
         const entry = {
             $type: Movie.$type,
             title: data.Title,
@@ -121,9 +122,7 @@ router.get("/get/movie", async (req, res) => {
         } as Movie.Type
 
         // Remove any undefined values
-        const result = Object.fromEntries(
-            Object.entries(entry).filter(([_, value]) => value !== undefined)
-        )
+        const result = cleanContentEntry(entry)
         if (!Movie.validate(result))
             throw Error("Retrieved movie data is invalid")
 
@@ -173,9 +172,7 @@ router.get("/get/tv", async (req, res) => {
         } as TvShow.Type
 
         // Remove any undefined values
-        const result = Object.fromEntries(
-            Object.entries(entry).filter(([_, value]) => value !== undefined)
-        )
+        const result = cleanContentEntry(entry)
         if (!TvShow.validate(result))
             throw Error("Retrieved tv series data is invalid")
 
@@ -266,9 +263,7 @@ router.get("/get/url", async (req, res) => {
         // }
 
         // Remove any undefined values
-        const result = Object.fromEntries(
-            Object.entries(entry).filter(([_, value]) => value !== undefined)
-        )
+        const result = cleanContentEntry(entry)
         if (!Uri.validate(result))
             throw Error("Retrieved URI data is invalid")
 
@@ -278,10 +273,5 @@ router.get("/get/url", async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch URL metadata' });
     }
 });
-
-const ensureSecureUrl = (url: string) => {
-    url.replace('http://', 'https://')
-    return url
-}
 
 export default router; 

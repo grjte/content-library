@@ -21,6 +21,9 @@ export function PodcastSearchResults({ results, onSelect, isLoading }: PodcastSe
             episodes.map((episode: PodcastEpisode.Type) => {
                 episode.podcastName = podcast.title;
                 episode.author = podcast.author;
+                if (!episode.thumbnailUrl && podcast.thumbnailUrl) {
+                    episode.thumbnailUrl = podcast.thumbnailUrl;
+                }
             });
             setEpisodes(episodes);
         } catch (error) {

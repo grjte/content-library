@@ -2,8 +2,8 @@ import 'dotenv/config';
 import crypto from 'crypto';
 import { Router } from 'express';
 import { Book, Movie, Podcast, TvShow } from '#/types/content';
+import { ensureSecureUrl, cleanContentEntry } from '#/helpers';
 
-// TODO: handle lexicon types
 const router = Router();
 
 router.get("/search/book", async (req, res) => {
@@ -41,12 +41,14 @@ router.get("/search/book", async (req, res) => {
                 uri: `${process.env.OPEN_LIBRARY_API_URL}${doc.key}`,
                 thumbnailUrl: doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg` : undefined
             } as Book.Type
-            if (!Book.validate(book))
+
+            const result = cleanContentEntry(book)
+            if (!Book.validate(result))
                 throw Error("Retrieved book data is invalid")
-            return book
+            return result
         })
 
-        res.json({ results: results || [] })
+        res.json({ result: results || [] })
     } catch (error) {
         console.error("Failed to fetch book data:", error)
         res.status(500).json({ error: 'Failed to fetch book data' })
@@ -92,18 +94,21 @@ router.get("/search/podcast", async (req, res) => {
         const results = data?.feeds.map((doc: any) => {
             const podcast = {
                 $type: Podcast.$type,
-                id: doc.id,
+                podcastIndexId: doc.id,
                 title: doc.title,
                 author: [doc.author],
                 description: doc.description,
                 thumbnailUrl: doc.image || undefined,
+                uri: doc.link ? ensureSecureUrl(doc.link) : undefined,
             } as Podcast.Type
-            if (!Podcast.validate(podcast))
+
+            const result = cleanContentEntry(podcast)
+            if (!Podcast.validate(result))
                 throw Error("Retrieved podcast data is invalid")
-            return podcast
+            return result
         })
 
-        res.json({ results: results || [] });
+        res.json({ result: results || [] });
     } catch (error) {
         console.error("Failed to fetch podcast data:", error);
         res.status(500).json({ error: 'Failed to fetch podcast data' });
@@ -142,14 +147,16 @@ router.get("/search/movie", async (req, res) => {
                 imdbId: doc.imdbID,
                 datePublished: doc.Year,
                 uri: `https://www.imdb.com/title/${doc.imdbID}`,
-                thumbnailUrl: doc.Poster !== 'N/A' ? doc.Poster : undefined,
+                thumbnailUrl: doc.Poster !== 'N/A' ? ensureSecureUrl(doc.Poster) : undefined,
             } as Movie.Type
-            if (!Movie.validate(movie))
+
+            const result = cleanContentEntry(movie)
+            if (!Movie.validate(result))
                 throw Error("Retrieved movie data is invalid")
-            return movie
+            return result
         })
 
-        res.json({ results: results || [] })
+        res.json({ result: results || [] })
     } catch (error) {
         console.error("Failed to fetch movie data:", error)
         res.status(500).json({ error: 'Failed to fetch movie data' })
@@ -171,7 +178,7 @@ router.get("/search/tv", async (req, res) => {
         }
 
         // forward the query
-        const url = `${process.env.OMDB_API_URL}?s=${encodeURIComponent(query as string)}&type=tv&apikey=${process.env.OMDB_API_KEY}`
+        const url = `${process.env.OMDB_API_URL}?s=${encodeURIComponent(query as string)}&type=series&apikey=${process.env.OMDB_API_KEY}`
         const options = {
             method: "get",
             headers: {
@@ -180,6 +187,7 @@ router.get("/search/tv", async (req, res) => {
         };
         const response = await fetch(url, options)
         const data = await response.json()
+
         const results = data?.Search.map((doc: any) => {
             const tvShow = {
                 type: TvShow.$type,
@@ -187,14 +195,16 @@ router.get("/search/tv", async (req, res) => {
                 imdbId: doc.imdbID,
                 datePublished: doc.Year,
                 uri: `https://www.imdb.com/title/${doc.imdbID}`,
-                thumbnailUrl: doc.Poster !== 'N/A' ? doc.Poster : undefined,
+                thumbnailUrl: doc.Poster !== 'N/A' ? ensureSecureUrl(doc.Poster) : undefined,
             } as TvShow.Type
-            if (!TvShow.validate(tvShow))
+
+            const result = cleanContentEntry(tvShow)
+            if (!TvShow.validate(result))
                 throw Error("Retrieved tv series data is invalid")
-            return tvShow
+            return result
         })
 
-        res.json({ results: results || [] })
+        res.json({ result: results || [] })
     } catch (error) {
         console.error("Failed to fetch tv series data:", error)
         res.status(500).json({ error: 'Failed to fetch tv series data' })
