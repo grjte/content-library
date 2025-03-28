@@ -32,6 +32,7 @@ export function BookSearchResults({ results, onSelect, isLoading }: BookSearchRe
                         )}
                     </div>
                     <button
+                        type="button"
                         onClick={(e) => { e.preventDefault(); onSelect(book) }}
                         className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 h-fit"
                     >

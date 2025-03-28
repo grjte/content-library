@@ -26,6 +26,9 @@ export function AddContentModal({ isOpen, onClose, onAdd }: AddContentModalProps
     const handleSearch = async (e: React.FormEvent) => {
         try {
             e.preventDefault();
+            if (!searchQuery && searchType !== Uri.$type) {
+                return;
+            }
             setError(null);
             setIsLoading(true);
             setSearchResults([]);
@@ -157,7 +160,7 @@ export function AddContentModal({ isOpen, onClose, onAdd }: AddContentModalProps
                             value={urlInput}
                             onChange={(e) => setUrlInput(e.target.value)}
                             required
-                            placeholder="https://..."
+                            placeholder="https://example.com"
                         />
                         <FormInput
                             label="Title"
@@ -169,14 +172,14 @@ export function AddContentModal({ isOpen, onClose, onAdd }: AddContentModalProps
                     </>
                 ) : (
                     <FormInput
-                        label="Search Query"
+                        label={searchType === Book.$type ? 'Search by title or author' : searchType === PodcastEpisode.$type ? 'Search by podcast name' : searchType === TvShow.$type ? 'Search by tv series name' : searchType === Movie.$type ? 'Search by movie title' : 'Search by title'}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         required
                         placeholder={(searchType === Book.$type) ? 'Enter title or author'
-                            : searchType === PodcastEpisode.$type ? 'Enter podcast name'
-                                : searchType === TvShow.$type ? 'Enter tv show name'
-                                    : searchType === Movie.$type ? 'Enter movie name'
+                            : searchType === PodcastEpisode.$type ? 'Enter name of podcast'
+                                : searchType === TvShow.$type ? 'Enter name of tv series'
+                                    : searchType === Movie.$type ? 'Enter movie title'
                                         : 'Enter title'}
                     />
                 )}
@@ -187,7 +190,7 @@ export function AddContentModal({ isOpen, onClose, onAdd }: AddContentModalProps
                     </div>
                 )}
 
-                <div className="mt-4">
+                <div className="mt-4" onClick={(e) => e.stopPropagation()}>
                     {searchResults.length > 0 && (
                         <div className="space-y-4">
                             {(searchType === Book.$type) && (

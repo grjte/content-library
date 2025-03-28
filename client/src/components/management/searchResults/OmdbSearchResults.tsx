@@ -41,6 +41,7 @@ export function OmdbSearchResults({ isLoading, contentType, results, onSelect }:
                         <p className="text-gray-500">Year: {omdbResult.datePublished}</p>
                     </div>
                     <button
+                        type="button"
                         onClick={(e) => { e.preventDefault(); handleSelect(omdbResult as Movie.Type | TvShow.Type) }}
                         className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 h-fit"
                     >
