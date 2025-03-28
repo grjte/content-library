@@ -23,40 +23,44 @@ export default function LocalFirstAppView({ repo }: { repo: Repo }) {
     // and open a web socket connection to it
     useEffect(() => {
         const findAndConnectToSyncServer = async (session: OAuthSession) => {
-            const agent = new Agent(session)
-            const pdsResponse = await agent.com.atproto.repo.getRecord({
-                repo: session.did,
-                collection: "xyz.groundmist.pss",
-                rkey: "sync_server",
-            })
-            if (pdsResponse.success) {
-                const pssHost = (pdsResponse.data.value as PSSRecord).host;
-                console.log('PSS host:', pssHost);
+            try {
+                const agent = new Agent(session)
+                const pdsResponse = await agent.com.atproto.repo.getRecord({
+                    repo: session.did,
+                    collection: "xyz.groundmist.sync",
+                    rkey: session.did,
+                })
+                if (pdsResponse.success) {
+                    const pssHost = (pdsResponse.data.value as PSSRecord).host;
+                    console.log('PSS host:', pssHost);
 
-                if (pssHost) {
-                    // Use the fetchHandler to make an authenticated request to the sync server to get a token
-                    const pssResponse = await session.fetchHandler(`https://${pssHost}/authenticate`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            lexiconAuthorityDomain: "xyz.groundmist.library",
-                        }),
-                    });
-                    const data = await pssResponse.json();
-                    console.log('Server response:', data);
+                    if (pssHost) {
+                        // Use the fetchHandler to make an authenticated request to the sync server to get a token
+                        const pssResponse = await session.fetchHandler(`https://${pssHost}/authenticate`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                lexiconAuthorityDomain: "xyz.groundmist.library",
+                            }),
+                        });
+                        const data = await pssResponse.json();
+                        console.log('Server response:', data);
 
-                    if (pssResponse.ok) {
-                        // connect to the sync server using the access token
-                        console.log(repo)
-                        console.log("Connecting to sync server...");
-                        repo.networkSubsystem.addNetworkAdapter(new BrowserWebSocketClientAdapter(`wss://${pssHost}?token=${data.token}`));
-                        console.log("Connected to sync server");
-                    } else {
-                        console.error('Authentication failed');
+                        if (pssResponse.ok) {
+                            // connect to the sync server using the access token
+                            console.log(repo)
+                            console.log("Connecting to sync server...");
+                            repo.networkSubsystem.addNetworkAdapter(new BrowserWebSocketClientAdapter(`wss://${pssHost}?token=${data.token}`));
+                            console.log("Connected to sync server");
+                        } else {
+                            console.error('Authentication failed');
+                        }
                     }
                 }
+            } catch (error) {
+                // silently fail if the sync server is not found
             }
         }
         if (session) {
