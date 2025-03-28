@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 
 export default defineConfig({
-  base: "./",
+  base: "/",
 
   build: {
     target: "esnext",
