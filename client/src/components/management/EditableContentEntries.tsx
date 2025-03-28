@@ -86,10 +86,8 @@ export function EditableContentEntries({
                                                             rel="noopener noreferrer"
                                                             className="block"
                                                         >
-                                                            <div className="bg-green-500 text-white rounded-full p-1.5 shadow-md">
-                                                                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                                </svg>
+                                                            <div className="bg-green-500 text-white text-xs font-medium rounded-md px-2 py-1 focus:outline-none shadow-md transition-colors duration-200 cursor-pointer">
+                                                                {"public"}
                                                             </div>
                                                         </a>
                                                     )}

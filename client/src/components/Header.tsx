@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { LoginModal } from "./common/LoginModal";
 import { useOAuthSession } from '../context/ATProtoSessionContext';
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import AtpAgent, { Agent } from "@atproto/api";
 
 type HeaderProps = {
@@ -57,7 +57,7 @@ export function Header({
                 <div className="max-w-7xl mx-auto">
                     {/* Main header row */}
                     <div className="flex justify-between items-center px-8 py-4 border-b border-stone-700">
-                        <h1 className="text-2xl font-serif text-stone-50">{import.meta.env.VITE_APP_NAME}</h1>
+                        <h1 className="text-2xl font-serif text-stone-50"><Link to="/">{import.meta.env.VITE_APP_NAME}</Link></h1>
 
                         {/* Desktop profile display */}
                         {isPublicView ? (
@@ -74,7 +74,9 @@ export function Header({
                                 )}
                                 <div className="text-stone-400 text-sm font-serif">
                                     <span className="text-stone-200">
-                                        {profile?.displayName || profile?.handle}
+                                        <a href={`https://bsky.app/profile/${profile?.handle}`} target="_blank" rel="noopener noreferrer">
+                                            {profile?.displayName || profile?.handle}
+                                        </a>
                                     </span>
                                 </div>
                             </div>
@@ -120,7 +122,9 @@ export function Header({
                                     />
                                 )}
                                 <div className="text-stone-200 text-sm font-serif">
-                                    {profile?.displayName || profile?.handle}
+                                    <a href={`https://bsky.app/profile/${profile?.handle}`} target="_blank" rel="noopener noreferrer">
+                                        {profile?.displayName || profile?.handle}
+                                    </a>
                                 </div>
                             </div>
                         </div>
