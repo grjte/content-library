@@ -47,7 +47,18 @@ export const ContentLabel = ({ entry }: { entry: Content }) => {
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={TYPE_CONFIG[entry.$type].icon} />
             </svg>
-            {entry.$type.split('.').pop()?.split('_')[0]}
+            {getLabel(entry)}
         </span>
     )
 };
+
+const getLabel = (entry: Content) => {
+    switch (entry.$type) {
+        case 'xyz.groundmist.library.content.tvShow':
+            return 'tv show'
+        case 'xyz.groundmist.library.content.podcastEpisode':
+            return 'podcast'
+        default:
+            return entry.$type.split('.').pop()
+    }
+}
