@@ -13,6 +13,7 @@ import { ATProtoSessionContext } from './context/ATProtoSessionContext.tsx'
 import AtProtoAppView from './AtProtoAppView.tsx'
 import { CollectionManager } from './components/management/CollectionManager.tsx'
 import { ContentManager } from './components/management/ContentManager.tsx'
+import dayjs from 'dayjs'
 
 // === AT PROTO ====================================================================================
 const client = new BrowserOAuthClient({
@@ -41,6 +42,13 @@ const client = new BrowserOAuthClient({
 // Initialize the OAuth client
 const result: undefined | { session: OAuthSession; state?: string | null } =
   await client.init()
+
+// Check if the token is expired and sign out if it is
+result?.session.getTokenInfo().then((tokenInfo) => {
+  if (dayjs(tokenInfo.expiresAt).isBefore(dayjs())) {
+    result?.session.signOut()
+  }
+})
 
 // === AUTOMERGE ===================================================================================
 const repo = new Repo({
