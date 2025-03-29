@@ -35,7 +35,7 @@ const client = new BrowserOAuthClient({
     "application_type": "web",
     "dpop_bound_access_tokens": true
   },
-  handleResolver: import.meta.env.VITE_ATPROTO_ENTRYWAY_URL
+  handleResolver: import.meta.env.VITE_ATPROTO_HANDLE_RESOLVER_URL
 })
 
 // Initialize the OAuth client
