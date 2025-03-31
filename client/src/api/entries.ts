@@ -6,31 +6,6 @@ import { AutomergeUrl, Repo } from "@automerge/automerge-repo";
 import AtpAgent, { Agent, RichText } from "@atproto/api";
 import { OAuthSession } from "@atproto/oauth-client-browser";
 
-// // TODO: should probably use an index for this instead of pulling all public entries
-// export const updateLocalFromPublic = async (repo: Repo, privateIndexUrl: AutomergeUrl, did: string) => {
-//     try {
-//         const indexHandle = repo.find<CollectionIndex>(privateIndexUrl);
-//         const CollectionIndex = await indexHandle.doc() as CollectionIndex;
-//         const publicEntries = await getPublicEntries(did);
-
-//         // if it does not exist, add it locally
-//         publicEntries.forEach((entry) => {
-//             if (!CollectionIndex.entries[entry.id]) {
-//                 // Create a new document using the repo
-//                 createEntry(repo, privateIndexUrl, entry);
-//             } else {
-//                 // TODO
-//                 // if it does exist, then the local version should be the canonical one. If there's a mismatch, 
-//                 // then first sync the local version with other local-first devices, then update the public 
-//                 // version to match the local version
-//             }
-//         })
-//     } catch (e) {
-//         console.error("Error updating local from public:", e);
-//         throw e;
-//     }
-// }
-
 export const createEntry = async (repo: Repo, privateIndexUrl: AutomergeUrl, content: Content) => {
     try {
         // Create a new document using the repo
@@ -305,36 +280,6 @@ export const getPublicEntries = async (handleOrDid: string): Promise<DisplayCont
         return []
     } catch (e) {
         console.error('Error getting entries from ATProto:', e)
-        throw e
-    }
-}
-
-
-// TODO: remove this when delete is working properly
-// utility function to clear all public entries from ATProto
-export const clearPublicEntries = async (session: OAuthSession, did: string) => {
-    const agent = new Agent(session)
-    const collection = `${import.meta.env.VITE_APP_NSID}.entry`
-
-    try {
-        const records = await agent.com.atproto.repo.listRecords({
-            repo: did,
-            collection: `${import.meta.env.VITE_APP_NSID}.entry`,
-        })
-
-        const deletes = records.data.records.map((record) => {
-            return {
-                $type: 'com.atproto.repo.applyWrites#delete',
-                collection: collection,
-                rkey: (record.value as LexiconRecord).id,
-            }
-        });
-        await agent.com.atproto.repo.applyWrites({
-            repo: session.did,
-            writes: deletes
-        })
-    } catch (e) {
-        console.error("Failed to clear public entries:", e)
         throw e
     }
 }
