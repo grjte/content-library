@@ -11,15 +11,29 @@ ENV PATH=/app/node_modules/.bin:$PATH
 # ---------------------------
 FROM base AS builder
 
-# Copy the monorepo directories into the image
+# Copy package files first to leverage Docker cache
+COPY server/package*.json ./server/
+COPY client/package*.json ./client/
+
+# Copy TypeScript configuration files for client
+COPY client/tsconfig*.json ./client/
+COPY client/vite.config.ts ./client/
+
+# Copy source files first (before npm install)
 COPY server ./server
 COPY client ./client
+
+# Install ALL dependencies (including dev dependencies needed for build)
+WORKDIR /app/client
+RUN npm ci
+
+WORKDIR /app/server
+RUN npm ci
 
 #############################
 # Build the Client
 #############################
 WORKDIR /app/client
-RUN npm install
 RUN npm run build
 # At this point, the Vite build outputs are in /app/client/dist
 
@@ -30,7 +44,6 @@ WORKDIR /app/server
 # Copy the built client files into the server's public folder
 RUN mkdir -p public && cp -R ../client/dist/* public/
 # Install server dependencies and build (e.g. transpile TypeScript)
-RUN npm install
 RUN npm run build
 
 # ---------------------------
@@ -38,11 +51,12 @@ RUN npm run build
 # ---------------------------
 FROM node:20-alpine AS production
 WORKDIR /app/server
-# Copy the built server (including the public folder with client assets) from the builder stage
-COPY --from=builder /app/server . 
-# Expose the port
+# Only copy what's necessary for production
+COPY --from=builder /app/server/dist ./dist
+COPY --from=builder /app/server/public ./public
+COPY --from=builder /app/server/package*.json ./
+RUN npm ci --only=production --omit=dev
 EXPOSE 3030
-# Run the application
 CMD ["npm", "start"]
 
 # ---------------------------
