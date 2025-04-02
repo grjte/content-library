@@ -34,7 +34,7 @@ export function CollectionManager() {
 
         // If no collection is specified by the URL, check the index doc and list collections.
         // If there's no index doc, create a new one.
-        const indexUrl = localStorage.getItem('content-library-index')
+        const indexUrl = localStorage.getItem('xyz.groundmist.library:indexUrl')
         if (isValidAutomergeUrl(indexUrl)) {
             setIndexUrl(indexUrl)
             loadCollections(indexUrl)
@@ -45,7 +45,7 @@ export function CollectionManager() {
             })
             // create an initial collection
             createCollection(indexHandle.url)
-            localStorage.setItem('content-library-index', indexHandle.url)
+            localStorage.setItem('xyz.groundmist.library:indexUrl', indexHandle.url)
             setIndexUrl(indexHandle.url)
         }
 

@@ -56,7 +56,7 @@ const repo = new Repo({
     new BroadcastChannelNetworkAdapter(),
     new BrowserWebSocketClientAdapter(`wss://${import.meta.env.VITE_APP_SERVER_URL}`),
   ],
-  storage: new IndexedDBStorageAdapter(import.meta.env.VITE_APP_NSID),
+  storage: new IndexedDBStorageAdapter("xyz.groundmist.library"),
 })
 
 // === RENDER APP ==================================================================================

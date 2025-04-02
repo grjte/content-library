@@ -1,7 +1,7 @@
-import { Outlet, useParams, useLocation } from "react-router-dom"
+import { Outlet, useParams, useLocation, useNavigate } from "react-router-dom"
 import { AutomergeUrl, isValidAutomergeUrl, Repo } from "@automerge/automerge-repo"
 import { RepoContext } from "@automerge/automerge-repo-react-hooks"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Index } from "./types/automerge"
 import { CollectionIndex } from "./types/automerge/collectionIndex"
 import dayjs from "dayjs"
@@ -18,12 +18,14 @@ export default function LocalFirstAppView({ repo }: { repo: Repo }) {
     const { collection } = useParams();
     const collectionUrl = collection as AutomergeUrl;
     const session = useOAuthSession();
+    const navigate = useNavigate()
 
     // Get the personal sync server url from the user's PDS when there's an active session
     // and open a web socket connection to it
     useEffect(() => {
         const findAndConnectToSyncServer = async (session: OAuthSession) => {
             try {
+                const indexUrl = localStorage.getItem('xyz.groundmist.library:indexUrl')
                 const agent = new Agent(session)
                 const pdsResponse = await agent.com.atproto.repo.getRecord({
                     repo: session.did,
@@ -43,6 +45,7 @@ export default function LocalFirstAppView({ repo }: { repo: Repo }) {
                             },
                             body: JSON.stringify({
                                 lexiconAuthorityDomain: "xyz.groundmist.library",
+                                rootDocUrl: indexUrl,
                             }),
                         });
                         const data = await pssResponse.json();
@@ -50,9 +53,13 @@ export default function LocalFirstAppView({ repo }: { repo: Repo }) {
 
                         if (pssResponse.ok) {
                             // connect to the sync server using the access token
-                            console.log(repo)
                             console.log("Connecting to sync server...");
                             repo.networkSubsystem.addNetworkAdapter(new BrowserWebSocketClientAdapter(`wss://${pssHost}?token=${data.token}`));
+                            if (data.rootDocUrl !== indexUrl) {
+                                // TODO: improve the handling of the account index document update
+                                localStorage.setItem('xyz.groundmist.library:indexUrl', data.rootDocUrl)
+                                navigate(`/collections`)
+                            }
                             console.log("Connected to sync server");
                         } else {
                             console.error('Authentication failed');
@@ -73,10 +80,9 @@ export default function LocalFirstAppView({ repo }: { repo: Repo }) {
         const updateIndex = async () => {
             if (!collectionUrl) return;
             // get the existing index doc or create a new one
-            const indexUrl = localStorage.getItem('content-library-index')
-            let indexHandle
+            const indexUrl = localStorage.getItem('xyz.groundmist.library:indexUrl')
 
-            const collectionHandle = repo.find<CollectionIndex>(collectionUrl)
+            let indexHandle
 
             if (isValidAutomergeUrl(indexUrl)) {
                 indexHandle = repo.find<Index>(indexUrl)
@@ -85,7 +91,7 @@ export default function LocalFirstAppView({ repo }: { repo: Repo }) {
                 indexHandle = repo.create<Index>({
                     collections: {}
                 })
-                localStorage.setItem('content-library-index', indexHandle.url)
+                localStorage.setItem('xyz.groundmist.library:indexUrl', indexHandle.url)
             }
 
             const indexDoc = await indexHandle.doc()
