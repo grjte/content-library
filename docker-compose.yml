@@ -10,7 +10,7 @@ services:
       - NODE_ENV=production
       - DATA_DIR=.data
       - PORT=3030
-      - USER_AGENT="ContentLibrary/0.1"
+      - USER_AGENT="GroundmistLibrary/0.1"
       - OPEN_LIBRARY_API_URL=https://openlibrary.org
       - PODCAST_API_URL=https://api.podcastindex.org/api/1.0/
       - PODCAST_API_KEY=${PODCAST_API_KEY}

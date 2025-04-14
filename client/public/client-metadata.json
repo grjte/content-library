@@ -1,6 +1,6 @@
 {
     "client_id": "https://library.groundmist.xyz/client-metadata.json",
-    "client_name": "ContentLibrary",
+    "client_name": "Groundmist Library",
     "client_uri": "https://library.groundmist.xyz",
     "redirect_uris": [
         "https://library.groundmist.xyz"

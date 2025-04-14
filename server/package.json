@@ -1,5 +1,5 @@
 {
-  "name": "groundmist-content-library-server",
+  "name": "groundmist-library-server",
   "author": "grjte",
   "version": "0.1.0",
   "description": "Sync server for a local-first application leveraging ATProto for managing private and public content history",

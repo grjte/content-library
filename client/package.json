@@ -1,5 +1,5 @@
 {
-  "name": "groundmist-content-library-client",
+  "name": "groundmist-library-client",
   "private": true,
   "version": "0.1.0",
   "description": "Client for a local-first application leveraging ATProto for managing private and public content history",
