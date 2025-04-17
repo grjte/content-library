@@ -9,6 +9,8 @@ import { useOAuthSession } from "./context/ATProtoSessionContext"
 import { OAuthSession } from "@atproto/oauth-client-browser"
 import { BrowserWebSocketClientAdapter } from "@automerge/automerge-repo-network-websocket"
 import { Agent } from "@atproto/api"
+// @ts-ignore
+import { registerSW } from 'virtual:pwa-register'
 
 type PSSRecord = {
     host: string
@@ -19,6 +21,8 @@ export default function LocalFirstAppView({ repo }: { repo: Repo }) {
     const collectionUrl = collection as AutomergeUrl;
     const session = useOAuthSession();
     const navigate = useNavigate()
+    const [isOnline, setIsOnline] = useState(navigator.onLine);
+    const [isServiceWorkerRegistered, setIsServiceWorkerRegistered] = useState(false);
 
     // Get the personal sync server url from the user's PDS when there's an active session
     // and open a web socket connection to it
@@ -112,7 +116,30 @@ export default function LocalFirstAppView({ repo }: { repo: Repo }) {
         updateIndex()
     }, [repo, collectionUrl])
 
+    useEffect(() => {
+        // Register service worker using PWA plugin
+        const updateSW = registerSW({
+            onNeedRefresh() {
+                console.log('New content is available, please refresh.');
+            },
+            onOfflineReady() {
+                console.log('App is ready for offline use.');
+                setIsServiceWorkerRegistered(true);
+            },
+        });
 
+        // Handle online/offline status
+        const handleOnline = () => setIsOnline(true);
+        const handleOffline = () => setIsOnline(false);
+
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, []);
 
     return (
         <RepoContext.Provider value={repo}>
