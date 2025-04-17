@@ -47,18 +47,19 @@ export function AddContentModal({ isOpen, onClose, onAdd }: AddContentModalProps
     };
 
     const handleUrl = async () => {
-        try {
-            const content = await getUrlContent(urlInput, urlTitle);
-            handleContentSelect(content);
-        }
-        catch (err) {
-            const content = {
-                $type: Uri.$type,
-                title: urlTitle || urlInput,
-                uri: urlInput
-            } as Uri.Type;
-            handleContentSelect(content);
-        }
+        // TODO: reenable this when the server is getting metadata for the url and do it in the background
+        // try {
+        //     const content = await getUrlContent(urlInput, urlTitle);
+        //     handleContentSelect(content);
+        // }
+        // catch (err) {
+        const content = {
+            $type: Uri.$type,
+            title: urlTitle || urlInput,
+            uri: urlInput
+        } as Uri.Type;
+        handleContentSelect(content);
+        // }
 
         resetForm();
         onClose();
