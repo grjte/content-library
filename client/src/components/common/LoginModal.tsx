@@ -23,7 +23,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
             }
             setIsLoading(true)
             setError(null)
-            await client.signInPopup(handle)
+            await client.signIn(handle)
             setIsLoading(false)
             onClose()
         } catch (err) {
