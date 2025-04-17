@@ -3,7 +3,7 @@ import { Content, DisplayContent, editableToLexicon, LexiconRecord, lexiconToDis
 import { CollectionIndex } from "../types/automerge/collectionIndex";
 import { EditableContent, createEditableContent } from "../types/automerge/editableContent";
 import { AutomergeUrl, Repo } from "@automerge/automerge-repo";
-import AtpAgent, { Agent, RichText } from "@atproto/api";
+import { Agent, CredentialSession, RichText } from "@atproto/api";
 import { OAuthSession } from "@atproto/oauth-client-browser";
 
 export const createEntry = async (repo: Repo, privateIndexUrl: AutomergeUrl, content: Content) => {
@@ -225,13 +225,19 @@ export async function resolveHandleToDid(handle: string): Promise<string> {
 
 
 /**
- * Given a DID, fetch its DID document from the PLC directory
+ * Given a handle or DID, fetch its DID document from the PLC directory
  * and extract the PDS service endpoint URL.
  *
- * @param did - The DID (e.g. "did:plc:abcdef123456...")
+ * @param handleOrDid - The handle or DID (e.g. "alice.bsky.social" or "did:plc:abcdef123456...")
  * @returns The PDS URL as a string.
  */
-export async function getPdsUrl(did: string): Promise<string> {
+export async function getPdsUrl(handleOrDid: string): Promise<{ did: string, service: string }> {
+    let did: string;
+    if (handleOrDid.startsWith("did:")) {
+        did = handleOrDid;
+    } else {
+        did = await resolveHandleToDid(handleOrDid);
+    }
     // The PLC directory endpoint; adjust if needed for your DID method
     const url = `${import.meta.env.VITE_ATPROTO_PLC_DIRECTORY_URL}/${did}`;
     const response = await fetch(url);
@@ -254,30 +260,20 @@ export async function getPdsUrl(did: string): Promise<string> {
         throw new Error(`No AT Protocol PDS service found in DID document for ${did}`);
     }
 
-    return pdsService.serviceEndpoint;
+    return { did, service: pdsService.serviceEndpoint };
 }
 
 export const getPublicEntries = async (handleOrDid: string): Promise<DisplayContent[]> => {
     try {
-        let did: string;
-        if (handleOrDid.startsWith("did:")) {
-            did = handleOrDid;
-        } else {
-            did = await resolveHandleToDid(handleOrDid);
-        }
-        const pdsUrl = await getPdsUrl(did);
-        console.log(pdsUrl);
-
-        const agent = new AtpAgent({
-            service: pdsUrl
-        })
+        const { did, service } = await getPdsUrl(handleOrDid);
+        const session = new CredentialSession(new URL(service))
+        const agent = new Agent(session)
         const records = await agent.com.atproto.repo.listRecords({
             repo: did,
             collection: $type,
         })
         const entries = records.data.records.map((record) => lexiconToDisplay(record.value as LexiconRecord));
         return entries
-        return []
     } catch (e) {
         console.error('Error getting entries from ATProto:', e)
         throw e

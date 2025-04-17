@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { LoginModal } from "./common/LoginModal";
 import { useOAuthSession } from '../context/ATProtoSessionContext';
 import { Link, useParams } from "react-router-dom";
-import AtpAgent, { Agent } from "@atproto/api";
+import { Agent, CredentialSession } from "@atproto/api";
 
 type HeaderProps = {
     isPublicView: boolean;
@@ -20,26 +20,20 @@ export function Header({
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     useEffect(() => {
-        const getProfile = async (agent: Agent, did: string) => {
+        const getProfile = async (did: string) => {
             try {
+                const session = new CredentialSession(
+                    import.meta.env.VITE_PUBLIC_BLUESKY_APPVIEW_API_URL
+                )
+                const agent = new Agent(session)
                 const response = await agent.app.bsky.actor.getProfile({ actor: did })
                 setProfile(response?.data)
             } catch (error) {
                 console.error('error getting profile: ', error)
             }
         }
-        if (session) {
-            const agent = new Agent(session);
-            if (did) {
-                getProfile(agent, decodedDid)
-            } else {
-                getProfile(agent, session.did)
-            }
-        } else if (did) {
-            const agent = new AtpAgent({
-                service: import.meta.env.VITE_PUBLIC_BLUESKY_APPVIEW_API_URL
-            })
-            getProfile(agent, decodedDid)
+        if (did) {
+            getProfile(decodedDid)
         }
     }, [did])
 
